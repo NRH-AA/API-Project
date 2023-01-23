@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
         spot.avgRating = (ratings / reviews);
     }
     
-    res.json(spots);
+    return res.json(spots);
 })
 
 router.get('/current', async (req, res) => {
@@ -42,7 +42,7 @@ router.get('/current', async (req, res) => {
         spot.avgRating = (ratings / reviews);
     }
     
-    res.json(spots);
+    return res.json(spots);
 });
 
 router.get('/:id', async (req, res) => {
@@ -75,6 +75,83 @@ router.get('/:id', async (req, res) => {
     spotData.avgStarRating = (ratings / reviews);
     
     return res.json(spotData);
+})
+
+const validateCreateSpot = [
+    check('address')
+      .exists({ checkFalsy: true })
+      .withMessage('Street address is required'),
+    check('city')
+      .exists({ checkFalsy: true })
+      .withMessage('City is required'),
+    check('state')
+      .exists({ checkFalsy: true })
+      .withMessage('State is required'),
+    check('country')
+      .exists({ checkFalsy: true })
+      .withMessage('Country is required'),
+    check('lat')
+      .exists({ checkFalsy: true })
+      .withMessage('Latitude is not valid'),
+    check('lng')
+      .exists({ checkFalsy: true })
+      .withMessage('Longitude is not valid'),
+    check('name')
+      .isLength({ max:50 })
+      .withMessage('Name must be less than 50 characters'),
+    check('description')
+      .exists({ checkFalsy: true })
+      .withMessage('Description is required'),
+    check('price')
+      .exists({ checkFalsy: true })
+      .withMessage('Price per day is required'),
+    handleValidationErrors
+  ]
+
+router.post('/', validateCreateSpot, async (req, res) => {
+    const { address, city, state, country, lat, lng, name, description, price} = req.body;
+    
+    let { user } = req;
+    if (!user) {
+        return res.status(400).json({
+            "message": "Authorization Error",
+            "errors": "You must be logged in!"
+        })
+    }
+    
+    const newSpot = await Spot.create({
+        ownerId: user.id, address, city, state, country, lat, lng, name, description, price
+    });
+    
+    if (!newSpot) {
+        return res.status(400).json({"message": "Failed to create new spot."});
+    }
+    
+    const checkSpot = await Spot.findByPk(newSpot.id, {
+        attributes: {exclude: ['previewImage', 'avgRating']}
+    })
+    
+    return res.status(200).json(checkSpot);
+})
+
+router.delete('/:id', async (req, res) => {
+    let { user } = req;
+    if (!user) {
+        return res.status(400).json({
+            "message": "Authorization Error",
+            "errors": "You must be logged in!"
+        })
+    }
+    
+    const spot = await Spot.findByPk(req.params.id);
+    
+    if (!spot) return res.status(404).json({"message": "Spot couldn't be found", "statusCode": 404});
+    
+    if (spot.ownerId !== user.id) return res.status(400).json({"message": "You do not have permission to delete that."});
+    
+    await spot.destroy();
+    
+    return res.json({"message": "Successfully deleted.", "statusCode": 200});
 })
 
 
