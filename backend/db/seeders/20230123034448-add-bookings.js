@@ -37,10 +37,10 @@ module.exports = {
 
   async down (queryInterface, Sequelize) {
     options.tableName = 'Bookings';
-    for (let i = 0; i < reviews.length; i++) {
+    for (let i = 0; i < bookings.length; i++) {
       await queryInterface.delete(options, {
-        spotId: reviews[i].spotId,
-        userId: reviews[i].userId
+        spotId: bookings[i].spotId,
+        userId: bookings[i].userId
       }, {});
     }
   }
