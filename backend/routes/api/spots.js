@@ -1,0 +1,80 @@
+const express = require('express');
+const router = express.Router();
+
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+const { User, Spot, SpotImage, Review } = require('../../db/models');
+
+
+
+router.get('/', async (req, res) => {
+    const spots = await Spot.findAll();
+    
+    for (let spot of spots) {
+        const img = await SpotImage.findOne({
+            where: {preview: true, spotId: spot.id}
+        });
+        const reviews = await Review.count({where: {spotId: spot.id}});
+        const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
+        
+        if (img) spot.previewImage = img.url;
+        spot.avgRating = (ratings / reviews);
+    }
+    
+    res.json(spots);
+})
+
+router.get('/current', async (req, res) => {
+    const { user } = req;
+    
+    if (!user) return res.json({ user: null })
+    
+    const spots = await Spot.findAll({where: {ownerId: user.id}});
+    
+    for (let spot of spots) {
+        const img = await SpotImage.findOne({
+            where: {preview: true, spotId: spot.id}
+        });
+        const reviews = await Review.count({where: {spotId: spot.id}});
+        const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
+        
+        if (img) spot.previewImage = img.url;
+        spot.avgRating = (ratings / reviews);
+    }
+    
+    res.json(spots);
+});
+
+router.get('/:id', async (req, res) => {
+    const spot = await Spot.findByPk(req.params.id, {
+        include: [
+            {
+                model: SpotImage, as: 'spotImages',
+                attributes: ['id', 'url', 'preview']
+            },
+            {
+                model: User, as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName']
+            }
+        ]
+    });
+    
+    if (!spot) {
+        res.status(404);
+        return res.json({
+            "message": "Spot couldn't be found",
+            "statusCode": 404
+        })
+    }
+    
+    const spotData = spot.toJSON();
+    const reviews = await Review.count({where: {spotId: spot.id}});
+    const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
+    spotData.numReviews = reviews;
+    spotData.avgStarRating = (ratings / reviews);
+    
+    return res.json(spotData);
+})
+
+
+module.exports = router;
