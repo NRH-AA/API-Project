@@ -47,6 +47,7 @@ router.get('/current', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     const spot = await Spot.findByPk(req.params.id, {
+        attributes: {exclude: ['previewImage']},
         include: [
             {
                 model: SpotImage, as: 'spotImages',
