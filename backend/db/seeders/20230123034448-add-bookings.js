@@ -26,7 +26,6 @@ const bookings = [
   }
 ]
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = 'Bookings';
@@ -38,7 +37,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     options.tableName = 'Bookings';
     for (let i = 0; i < bookings.length; i++) {
-      await queryInterface.delete(options, {
+      await queryInterface.bulkDelete(options, {
         spotId: bookings[i].spotId,
         userId: bookings[i].userId
       }, {});
