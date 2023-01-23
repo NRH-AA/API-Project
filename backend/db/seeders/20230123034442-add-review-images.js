@@ -5,27 +5,23 @@ if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
 }
 
-const images = [
-  {
-    reviewId: 1,
-    url: '../reviewImages1.png'
-  },
-  {
-    reviewId: 1,
-    url: '../reviewImages2.png'
-  },
-  {
-    reviewId: 2,
-    url: '../reviewImages3.png'
-  }
-]
-
 module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = 'ReviewImages';
-    await queryInterface.bulkInsert(options, images, {
-      validate: true
-    });
+    await queryInterface.bulkInsert(options, [
+      {
+        reviewId: 1,
+        url: '../reviewImages1.png'
+      },
+      {
+        reviewId: 1,
+        url: '../reviewImages2.png'
+      },
+      {
+        reviewId: 2,
+        url: '../reviewImages3.png'
+      }
+    ]);
   },
 
   async down (queryInterface, Sequelize) {

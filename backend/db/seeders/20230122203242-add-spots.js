@@ -5,45 +5,41 @@ if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
 }
 
-const spots = [
-  {
-    ownerId: 1,
-    address: '123 Main Street',
-    city: 'Portland',
-    state: 'Oregon',
-    country: 'United States',
-    name: 'BestSpot',
-    description: 'MoreThan5Chars',
-    price: 200,
-  },
-  {
-    ownerId: 1,
-    address: '445 Sever Road',
-    city: 'Portland',
-    state: 'Oregon',
-    country: 'United States',
-    name: 'OkaySpot',
-    description: 'MoreThan6Chars',
-    price: 150,
-  },
-  {
-    ownerId: 2,
-    address: '514 Cuger Blvd',
-    city: 'New York',
-    state: 'New York',
-    country: 'United States',
-    name: 'BadSpot',
-    description: 'MoreThan7Chars',
-    price: 50,
-  }
-]
-
 module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = 'Spots';
-    await queryInterface.bulkInsert(options, spots, {
-      validate: true
-    });
+    await queryInterface.bulkInsert(options, [
+      {
+        ownerId: 1,
+        address: '123 Main Street',
+        city: 'Portland',
+        state: 'Oregon',
+        country: 'United States',
+        name: 'BestSpot',
+        description: 'MoreThan5Chars',
+        price: 200,
+      },
+      {
+        ownerId: 1,
+        address: '445 Sever Road',
+        city: 'Portland',
+        state: 'Oregon',
+        country: 'United States',
+        name: 'OkaySpot',
+        description: 'MoreThan6Chars',
+        price: 150,
+      },
+      {
+        ownerId: 2,
+        address: '514 Cuger Blvd',
+        city: 'New York',
+        state: 'New York',
+        country: 'United States',
+        name: 'BadSpot',
+        description: 'MoreThan7Chars',
+        price: 50,
+      }
+    ]);
   },
 
   async down (queryInterface, Sequelize) {
