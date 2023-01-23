@@ -13,7 +13,7 @@ const spots = [
     country: 'United States',
     name: 'BestSpot',
     description: 'MoreThan5Chars',
-    price: 200.00,
+    price: 200,
   },
   {
     ownerId: 1,
@@ -23,7 +23,7 @@ const spots = [
     country: 'United States',
     name: 'OkaySpot',
     description: 'MoreThan6Chars',
-    price: 150.00,
+    price: 150,
   },
   {
     ownerId: 2,
@@ -33,7 +33,7 @@ const spots = [
     country: 'United States',
     name: 'BadSpot',
     description: 'MoreThan7Chars',
-    price: 50.00,
+    price: 50,
   }
 ]
 

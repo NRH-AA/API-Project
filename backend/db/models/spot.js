@@ -40,12 +40,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     lat: {
-      type: DataTypes.FLOAT(9, 7),
-      defaultValue: 0.0
+      type: DataTypes.FLOAT,
+      defaultValue: 0
     },
     lng: {
-      type: DataTypes.FLOAT(10, 7),
-      defaultValue: 0.0
+      type: DataTypes.FLOAT,
+      defaultValue: 0
     },
     name: {
       type: DataTypes.STRING,
@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {len: [5, 500]}
     },
     price: {
-      type:DataTypes.FLOAT(5, 2),
+      type:DataTypes.FLOAT,
       allowNull: false
     },
     avgRating: {
