@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
         spot.avgRating = (ratings / reviews);
     }
     
-    res.json(spots);
+    return res.json(spots);
 })
 
 router.get('/current', async (req, res) => {
@@ -42,7 +42,7 @@ router.get('/current', async (req, res) => {
         spot.avgRating = (ratings / reviews);
     }
     
-    res.json(spots);
+    return res.json(spots);
 });
 
 router.get('/:id', async (req, res) => {
@@ -131,7 +131,27 @@ router.post('/', validateCreateSpot, async (req, res) => {
         attributes: {exclude: ['previewImage', 'avgRating']}
     })
     
-    res.status(200).json(checkSpot);
+    return res.status(200).json(checkSpot);
+})
+
+router.delete('/:id', async (req, res) => {
+    let { user } = req;
+    if (!user) {
+        return res.status(400).json({
+            "message": "Authorization Error",
+            "errors": "You must be logged in!"
+        })
+    }
+    
+    const spot = await Spot.findByPk(req.params.id);
+    
+    if (!spot) return res.status(404).json({"message": "Spot couldn't be found", "statusCode": 404});
+    
+    if (spot.ownerId !== user.id) return res.status(400).json({"message": "You do not have permission to delete that."});
+    
+    await spot.destroy();
+    
+    return res.json({"message": "Successfully deleted.", "statusCode": 200});
 })
 
 
