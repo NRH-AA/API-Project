@@ -1,8 +1,9 @@
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
-
-const { Spot } = require('../models');
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
 
 const spots = [
   {
@@ -39,22 +40,17 @@ const spots = [
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Spots', spots, {
+    options.tableName = 'Spots';
+    await queryInterface.bulkInsert(options, spots, {
       validate: true
     });
-    
-    
   },
 
   async down (queryInterface, Sequelize) {
-    for (let i = 0; i < spots.length; i++) {
-      const tmpSpot = await Spot.findOne({
-        where: {address: spots[i].address}
-      });
-      
-      if (tmpSpot) await tmpSpot.destroy();
-    }
-    
-    
+    options.tableName = 'Spots';
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      address: {[Op.in]: ['123 Main Street', '445 Sever Road', '514 Cuger Blvd']}
+    }, {});
   }
 };

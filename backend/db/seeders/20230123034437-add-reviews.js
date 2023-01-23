@@ -1,6 +1,9 @@
 'use strict';
 
-const { Review } = require('../models');
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
 
 const reviews = [
   {
@@ -23,27 +26,21 @@ const reviews = [
   }
 ]
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Reviews', reviews, {
+    options.tableName = 'Reviews';
+    await queryInterface.bulkInsert(options, reviews, {
       validate: true
     });
-    
   },
 
   async down (queryInterface, Sequelize) {
+    options.tableName = 'Reviews';
     for (let i = 0; i < reviews.length; i++) {
-      const tmpReview = await Review.findOne({
-        where: {
-          spotId: reviews[i].spotId,
-          userId: reviews[i].userId
-        }
-      });
-      
-      if (tmpReview) await tmpReview.destroy();
+      await queryInterface.delete(options, {
+        spotId: reviews[i].spotId,
+        userId: reviews[i].userId
+      }, {});
     }
-    
-    
   }
 };

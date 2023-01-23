@@ -1,6 +1,9 @@
 'use strict';
 
-const { SpotImage } = require('../models');
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
 
 const images = [
   {
@@ -20,28 +23,19 @@ const images = [
   }
 ]
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('SpotImages', images, {
+    options.tableName = 'SpotImages';
+    await queryInterface.bulkInsert(options, images, {
       validate: true
     });
-    
-    
   },
 
   async down (queryInterface, Sequelize) {
-    for (let i = 0; i < images.length; i++) {
-      const tmpImg = await SpotImage.findOne({
-        where: {
-          spotId: images[i].spotId,
-          url: images[i].url
-        }
-      });
-      
-      if (tmpImg) await tmpImg.destroy();
-    }
-    
-    
+    options.tableName = 'SpotImages';
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      url: {[Op.in]: ['../spotImage1.png', '../spotImage2.png', '../spotImage3.png']}
+    }, {});
   }
 };

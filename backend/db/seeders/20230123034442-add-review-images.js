@@ -1,6 +1,9 @@
 'use strict';
 
-const { ReviewImage } = require('../models');
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
 
 const images = [
   {
@@ -17,29 +20,19 @@ const images = [
   }
 ]
 
-
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('ReviewImages', images, {
+    options.tableName = 'ReviewImages';
+    await queryInterface.bulkInsert(options, images, {
       validate: true
     });
-    
-    
   },
 
   async down (queryInterface, Sequelize) {
-    for (let i = 0; i < images.length; i++) {
-      const tmpImg = await ReviewImage.findOne({
-        where: {
-          reviewId: images[i].reviewId,
-          url: images[i].url
-        }
-      });
-      
-      if (tmpImg) await tmpImg.destroy();
-    }
-    
-    
+    options.tableName = 'ReviewImages';
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete(options, {
+      url: {[Op.in]: ['../reviewImages1.png', '../reviewImages2.png', '../reviewImages3.png']}
+    }, {});
   }
 };

@@ -1,6 +1,9 @@
 'use strict';
 
-const { Booking } = require('../models');
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
 
 const bookings = [
   {
@@ -26,25 +29,19 @@ const bookings = [
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Bookings', bookings, {
+    options.tableName = 'Bookings';
+    await queryInterface.bulkInsert(options, bookings, {
       validate: true
     });
-    
-    
   },
 
   async down (queryInterface, Sequelize) {
-    for (let i = 0; i < bookings.length; i++) {
-      const tmpBooking = await Booking.findOne({
-        where: {
-          spotId: bookings[i].spotId,
-          userId: bookings[i].userId
-        }
-      });
-      
-      if (tmpBooking) await tmpBooking.destroy();
+    options.tableName = 'Bookings';
+    for (let i = 0; i < reviews.length; i++) {
+      await queryInterface.delete(options, {
+        spotId: reviews[i].spotId,
+        userId: reviews[i].userId
+      }, {});
     }
-    
-    
   }
 };
