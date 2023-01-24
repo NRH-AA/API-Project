@@ -39,10 +39,17 @@ const validateSpotImage = [
     check('url').exists({ checkFalsy: true }).withMessage('Image URL is required'),
     handleValidationErrors
 ]
+
+const validateReview = [
+    check('review').exists({ checkFalsy: true }).isLength({ min:20, max: 500 }).withMessage('Review text is required'),
+    check('stars').isInt({gt: 0, lt: 6}).withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+]
   
 module.exports = {
     validateSignUp,
     validateCreateSpot,
     validateLogin,
-    validateSpotImage
+    validateSpotImage,
+    validateReview
 }
