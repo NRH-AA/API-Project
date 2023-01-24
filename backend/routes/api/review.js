@@ -22,9 +22,6 @@ router.get('/current', async (req, res) => {
         ]
     });
     
-    
-    
-    
     return res.json(reviews);
 });
 

@@ -1,19 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
 const { User, Spot, SpotImage, Review } = require('../../db/models');
 const { Sequelize } = require('sequelize');
 
 
+// Get all Spots
 router.get('/', async (req, res) => {
     const spots = await Spot.findAll({
         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', [Sequelize.fn("AVG", Sequelize.col("stars")), "avgRating"], 'previewImage'],
-        include: {
-            model: Review,
-            attributes: []
-        }
+        include: {model: Review, attributes: []}
     });
     
     const spotsData = [];
@@ -26,6 +22,8 @@ router.get('/', async (req, res) => {
     return res.json(spotsData);
 })
 
+
+// Get user spots
 router.get('/current', async (req, res) => {
     const { user } = req;
     
@@ -47,6 +45,8 @@ router.get('/current', async (req, res) => {
     return res.json(spots);
 });
 
+
+// Get Spot by ID
 router.get('/:id', async (req, res) => {
     const spot = await Spot.findByPk(req.params.id, {
         attributes: {exclude: ['previewImage']},
@@ -79,37 +79,8 @@ router.get('/:id', async (req, res) => {
     return res.json(spotData);
 })
 
-const validateCreateSpot = [
-    check('address')
-      .exists({ checkFalsy: true })
-      .withMessage('Street address is required'),
-    check('city')
-      .exists({ checkFalsy: true })
-      .withMessage('City is required'),
-    check('state')
-      .exists({ checkFalsy: true })
-      .withMessage('State is required'),
-    check('country')
-      .exists({ checkFalsy: true })
-      .withMessage('Country is required'),
-    check('lat')
-      .exists({ checkFalsy: true })
-      .withMessage('Latitude is not valid'),
-    check('lng')
-      .exists({ checkFalsy: true })
-      .withMessage('Longitude is not valid'),
-    check('name')
-      .isLength({ max:50 })
-      .withMessage('Name must be less than 50 characters'),
-    check('description')
-      .exists({ checkFalsy: true })
-      .withMessage('Description is required'),
-    check('price')
-      .exists({ checkFalsy: true })
-      .withMessage('Price per day is required'),
-    handleValidationErrors
-  ]
-
+// Create Spot
+const { validateCreateSpot } = require('./validations');
 router.post('/', validateCreateSpot, async (req, res) => {
     const { address, city, state, country, lat, lng, name, description, price} = req.body;
     
@@ -136,6 +107,7 @@ router.post('/', validateCreateSpot, async (req, res) => {
     return res.status(200).json(checkSpot);
 })
 
+// Delete Spot
 router.delete('/:id', async (req, res) => {
     let { user } = req;
     if (!user) {
