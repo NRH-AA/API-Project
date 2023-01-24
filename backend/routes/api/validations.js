@@ -34,9 +34,15 @@ const validateCreateSpot = [
     check('price').exists({ checkFalsy: true }).withMessage('Price per day is required'),
     handleValidationErrors
 ]
+
+const validateSpotImage = [
+    check('url').exists({ checkFalsy: true }).withMessage('Image URL is required'),
+    handleValidationErrors
+]
   
 module.exports = {
     validateSignUp,
     validateCreateSpot,
-    validateLogin
+    validateLogin,
+    validateSpotImage
 }
