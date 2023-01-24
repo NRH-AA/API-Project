@@ -7,19 +7,31 @@ const { Sequelize } = require('sequelize');
 
 // Get all Spots
 router.get('/', async (req, res) => {
+    // const spots = await Spot.findAll({
+    //     attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', [Sequelize.fn("AVG", Sequelize.col("stars")), "avgRating"], 'previewImage'],
+    //     include: {model: Review, attributes: []}
+    // });
+    
+    // for (let spot of spots) {
+    //     spot.avgRating = Math.round(spot.avgRating);
+    //     const previewImage = await SpotImage.findOne({where: {spotId: spot.id, preview: true}})
+    //     spot.previewImage = previewImage && previewImage.url || "";
+    // }
+    
     const spots = await Spot.findAll({
-        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', [Sequelize.fn("AVG", Sequelize.col("stars")), "avgRating"], 'previewImage'],
-        include: {model: Review, attributes: []}
+        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price'],
     });
     
-    const spotsData = [];
     for (let spot of spots) {
-        const tmpSpot = spot.toJSON();
-        tmpSpot.avgRating = Math.round(tmpSpot.avgRating);
-        spotsData.push(tmpSpot);
+        const reviewCount = await Review.count({where: {spotId: spot.id}});
+        const reviewStars = await Review.sum('stars', {where: {spotId: spot.id}});
+        spot.avgRating = Math.round(reviewStars / reviewCount);
+        
+        const previewImage = await SpotImage.findOne({where: {spotId: spot.id, preview: true}})
+        spot.previewImage = previewImage && previewImage.url || "";
     }
     
-    return res.json(spotsData);
+    res.json(spots);
 })
 
 
