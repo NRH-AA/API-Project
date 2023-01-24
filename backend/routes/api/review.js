@@ -67,5 +67,26 @@ router.post('/:spotId', validateReview, async (req, res) => {
     return res.status(200).json(newReview);
 });
 
+router.get('/:spotId', async (req, res) => {
+    const reviews = await Review.findAll({
+        where: {spotId: req.params.spotId},
+        include: {
+            model: ReviewImage,
+            attributes: ['id', 'url']
+        }
+    });
+    
+    const reviewsJsons = [];
+    for (let review of reviews) {
+        const reviewJson = review.toJSON();
+        reviewJson.User = await User.findByPk(review.userId, {
+            attributes: ['id', 'firstName', 'lastName']
+        });
+        reviewsJsons.push(reviewJson);
+    };
+    
+    return res.json(reviewsJsons);
+});
+
 
 module.exports = router;
