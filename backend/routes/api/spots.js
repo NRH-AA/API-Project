@@ -58,16 +58,16 @@ router.get('/current', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const spot = await Spot.findByPk(req.params.id, {
         attributes: {exclude: ['previewImage']},
-        include: [
-            {
-                model: SpotImage, as: 'spotImages',
-                attributes: ['id', 'url', 'preview']
-            },
-            {
-                model: User, as: 'Owner',
-                attributes: ['id', 'firstName', 'lastName']
-            }
-        ]
+        // include: [
+        //     {
+        //         model: SpotImage, as: 'spotImages',
+        //         attributes: ['id', 'url', 'preview']
+        //     },
+        //     {
+        //         model: User, as: 'Owner',
+        //         attributes: ['id', 'firstName', 'lastName']
+        //     }
+        // ]
     });
     
     if (!spot) {
@@ -83,6 +83,14 @@ router.get('/:id', async (req, res) => {
     const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
     spotData.numReviews = reviews;
     spotData.avgStarRating = (ratings / reviews);
+    
+    spotData.SpotImage = await SpotImage.findAll({
+        attributes: ['id', 'url', 'preview'],
+        where: {spotId: req.params.id}
+    });
+    spotData.Owner = await User.findByPk(spot.ownerId, {
+        attributes: ['id', 'firstName', 'lastName']
+    });
     
     return res.json(spotData);
 })
