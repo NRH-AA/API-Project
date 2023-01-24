@@ -5,7 +5,6 @@ const { User, Spot, SpotImage, Review } = require('../../db/models');
 const { Sequelize } = require('sequelize');
 
 const { validateCreateSpot, validateSpotImage } = require('./validations');
-const spotimage = require('../../db/models/spotimage');
 
 // Get all Spots
 router.get('/', async (req, res) => {
@@ -235,5 +234,46 @@ router.post('/:id/images', validateSpotImage, async (req, res) => {
     
     return res.status(200).json(newImage);
 });
+
+router.delete('/:spotId/images/:imageId', async (req, res) => {
+    let { user } = req;
+    if (!user) {
+        return res.status(400).json({
+            "message": "Authorization Error",
+            "errors": "You must be logged in!"
+        });
+    };
+    
+    const spot = await Spot.findByPk(req.params.spotId);
+    if (!spot) {
+        return res.status(404).json({
+            "message": "Spot couldn't be found",
+            "statusCode": 404
+        });
+    };
+    
+    if (spot.ownerId != user.id) {
+        return res.status(400).json({
+            "message": "Authorization Error",
+            "errors": "You must own the spot!"
+        });
+    };
+    
+    const spotImage = await SpotImage.findByPk(req.params.imageId);
+    if (!spotImage) {
+        return res.status(404).json({
+            "message": "Spot image couldn't be found",
+            "statusCode": 404
+        });
+    };
+    
+    await spotImage.destroy();
+    
+    return res.json({
+        "message": "Successfully deleted",
+        "statusCode": 200
+    });
+});
+
 
 module.exports = router;
