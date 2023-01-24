@@ -107,6 +107,32 @@ router.post('/', validateCreateSpot, async (req, res) => {
     return res.status(200).json(checkSpot);
 })
 
+// Edit Spot
+router.patch('/:id', validateCreateSpot, async (req, res) => {
+    const { address, city, state, country, lat, lng, name, description, price} = req.body;
+    
+    let { user } = req;
+    if (!user) {
+        return res.status(400).json({
+            "message": "Authorization Error",
+            "errors": "You must be logged in!"
+        })
+    }
+    
+    const spot = await Spot.findByPk(req.params.id);
+    
+    if (!spot) {
+        return res.status(404).json({
+            "message": "Spot couldn't be found",
+            "statusCode": 404
+        })
+    }
+    
+    await spot.update({address, city, state, country, lat, lng, name, description, price});
+    
+    return res.json(spot);
+})
+
 // Delete Spot
 router.delete('/:id', async (req, res) => {
     let { user } = req;
