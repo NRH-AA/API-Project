@@ -4,24 +4,26 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { User, Spot, SpotImage, Review } = require('../../db/models');
-
+const { Sequelize } = require('sequelize');
 
 
 router.get('/', async (req, res) => {
-    const spots = await Spot.findAll();
+    const spots = await Spot.findAll({
+        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', [Sequelize.fn("AVG", Sequelize.col("stars")), "avgRating"], 'previewImage'],
+        include: {
+            model: Review,
+            attributes: []
+        }
+    });
     
+    const spotsData = [];
     for (let spot of spots) {
-        const img = await SpotImage.findOne({
-            where: {preview: true, spotId: spot.id}
-        });
-        const reviews = await Review.count({where: {spotId: spot.id}});
-        const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
-        
-        if (img) spot.previewImage = img.url;
-        spot.avgRating = (ratings / reviews);
+        const tmpSpot = spot.toJSON();
+        tmpSpot.avgRating = Math.round(tmpSpot.avgRating);
+        spotsData.push(tmpSpot);
     }
     
-    return res.json(spots);
+    return res.json(spotsData);
 })
 
 router.get('/current', async (req, res) => {
