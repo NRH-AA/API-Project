@@ -4,22 +4,31 @@ const router = express.Router();
 const { User, Spot, SpotImage, Review } = require('../../db/models');
 const { Sequelize } = require('sequelize');
 
+const { validateCreateSpot, validateSpotImage } = require('./validations');
+const spotimage = require('../../db/models/spotimage');
 
 // Get all Spots
 router.get('/', async (req, res) => {
-    const spots = await Spot.findAll({
-        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', [Sequelize.fn("AVG", Sequelize.col("stars")), "avgRating"], 'previewImage'],
-        include: {model: Review, attributes: []}
-    });
+    // const spots = await Spot.findAll({
+    //     attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', [Sequelize.fn("AVG", Sequelize.col("stars")), "avgRating"], 'previewImage'],
+    //     include: {model: Review, attributes: []}
+    // });
     
-    const spotsData = [];
+    // for (let spot of spots) {
+    //     spot.avgRating = Math.round(spot.avgRating);
+    //     const previewImage = await SpotImage.findOne({where: {spotId: spot.id, preview: true}})
+    //     spot.previewImage = previewImage && previewImage.url || "";
+    // }
+    
+    const spots = await Spot.findAll();
+    
     for (let spot of spots) {
-        const tmpSpot = spot.toJSON();
-        tmpSpot.avgRating = Math.round(tmpSpot.avgRating);
-        spotsData.push(tmpSpot);
+        const reviewCount = await Review.count({where: {spotId: spot.id}});
+        const reviewStars = await Review.sum('stars', {where: {spotId: spot.id}});
+        spot.avgRating = Math.round(reviewStars / reviewCount);
     }
     
-    return res.json(spotsData);
+    res.json(spots);
 })
 
 
@@ -80,7 +89,6 @@ router.get('/:id', async (req, res) => {
 })
 
 // Create Spot
-const { validateCreateSpot } = require('./validations');
 router.post('/', validateCreateSpot, async (req, res) => {
     const { address, city, state, country, lat, lng, name, description, price} = req.body;
     
@@ -132,6 +140,30 @@ router.patch('/:id', validateCreateSpot, async (req, res) => {
     
     return res.json(spot);
 })
+router.put('/:id', validateCreateSpot, async (req, res) => {
+    const { address, city, state, country, lat, lng, name, description, price} = req.body;
+    
+    let { user } = req;
+    if (!user) {
+        return res.status(400).json({
+            "message": "Authorization Error",
+            "errors": "You must be logged in!"
+        })
+    }
+    
+    const spot = await Spot.findByPk(req.params.id);
+    
+    if (!spot) {
+        return res.status(404).json({
+            "message": "Spot couldn't be found",
+            "statusCode": 404
+        })
+    }
+    
+    await spot.update({address, city, state, country, lat, lng, name, description, price});
+    
+    return res.json(spot);
+})
 
 // Delete Spot
 router.delete('/:id', async (req, res) => {
@@ -154,5 +186,54 @@ router.delete('/:id', async (req, res) => {
     return res.json({"message": "Successfully deleted.", "statusCode": 200});
 })
 
+// Add Image to Spot Id
+router.post('/:id/images', validateSpotImage, async (req, res) => {
+    let { user } = req;
+    if (!user) {
+        return res.status(400).json({
+            "message": "Authorization Error",
+            "errors": "You must be logged in!"
+        });
+    };
+    
+    let { url, preview } = req.body;
+    
+    const spot = await Spot.findByPk(req.params.id);
+    if (!spot) {
+        return res.status(404).json({
+            "message": "Spot couldn't be found",
+            "statusCode": 404
+        });
+    };
+    
+    if (spot.ownerId != user.id) {
+        return res.status(400).json({
+            "message": "Authorization Error",
+            "errors": "You must own the spot!"
+        });
+    };
+    
+    
+    if (preview) {
+        spot.previewImage = url;
+        preview = true;
+    };
+    
+    if (!preview) preview = false;
+    
+    const spotImages = await SpotImage.findOne({where: {spotId: req.params.id, preview: true}});
+    spotImages.preview = false;
+    await spotImages.save();
+    
+    const newImage = await SpotImage.create({
+        spotId: req.params.id,
+        url,
+        preview
+    });
+    
+    await spot.save();
+    
+    return res.status(200).json(newImage);
+});
 
 module.exports = router;
