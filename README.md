@@ -1,5 +1,13 @@
 # AirBnB Clone
 
+## Demo User Credentials
+```json
+    {
+      "credential": "Demo",
+      "password": "password"
+    }
+```
+
 ## Database Schema Design
 
 ![airbnb-dbdiagram]
