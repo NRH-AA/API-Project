@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router();
 
-const { ReviewImage } = require('../../db/models');
-
+const { SpotImage } = require('../../db/models');
 
 router.delete('/:id', async (req, res) => {
     const { user } = req;
@@ -13,27 +12,26 @@ router.delete('/:id', async (req, res) => {
         });
     };
     
-    const reviewImage = await ReviewImage.findByPk(req.params.id);
-    if (!reviewImage) {
+    const spotImage = await SpotImage.findByPk(req.params.id);
+    if (!spotImage) {
         return res.status(404).json({
-            "message": "Review image couldn't be found",
+            "message": "Spot image couldn't be found",
             "statusCode": 404
         });
     };
     
-    if (reviewImage.userId !== user.id) {
+    if (spotImage.userId !== user.id) {
         return res.status(400).json({
             "message": "Authorization Error",
-            "errors": "You can only delete your own review image!"
+            "errors": "You can only delete your own spots image!"
         });
     };
     
-    await reviewImage.destroy();
-    return res.json({
+    await spotImage.destroy();
+    return res.status(200).json({
         "message": "Successfully deleted",
         "statusCode": 200
     });
 });
-
 
 module.exports = router;

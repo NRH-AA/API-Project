@@ -11,13 +11,15 @@ const usersRouter = require('./users.js');
 const spotsRouter = require('./spots.js');
 const reviewsRouter = require('./review.js');
 const reviewImagesRouter = require('./reviewimage.js');
+const spotImagesRouter = require('./spotimage.js');
 const bookings = require('./bookings.js');
 
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 router.use('/spots', spotsRouter);
 router.use('/reviews', reviewsRouter);
-router.use('/reviewimages', reviewImagesRouter);
+router.use('/review-images', reviewImagesRouter);
+router.use('/spot-images', spotImagesRouter);
 router.use('/bookings', bookings);
 
 // Test access
