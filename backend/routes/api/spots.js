@@ -342,7 +342,7 @@ router.get('/:spotId/reviews', async (req, res) => {
 });
 
 router.get('/:spotId/bookings', async (req, res) => {
-    const spot = await Spot.findByPk(req.params.id);
+    const spot = await Spot.findByPk(req.params.spotId);
     if (!spot) {
         return res.status(404).json({
             "message": "Spot couldn't be found",
