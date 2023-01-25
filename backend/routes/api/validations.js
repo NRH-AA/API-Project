@@ -58,14 +58,14 @@ const validateBooking = [
 ]
 
 const validateGetSpots = [
-    check('page').isInt({gte: 1}).withMessage('Page must be greater than or equal to 1'),
-    check('size').isInt({gte: 1}).withMessage('Size must be greater than or equal to 1'),
-    check('maxLat').exists({ checkFalsy: true }).withMessage('Maximum latitude is invalid'),
-    check('minLat').exists({ checkFalsy: true }).withMessage('Minimum latitude is invalid'),
-    check('maxLng').exists({ checkFalsy: true }).withMessage('Maximum longitude is invalid'),
-    check('minLng').exists({ checkFalsy: true }).withMessage('Minimum longitude is invalid'),
-    check('maxPrice').isInt({gte: 0}).withMessage('Maximum price must be greater than or equal to 0'),
-    check('minPrice').isInt({gte: 0}).withMessage('Minimum price must be greater than or equal to 0'),
+    check('page').optional({nullable: true, checkFalsy: true}).isInt({gte: 1}).withMessage('Page must be greater than or equal to 1'),
+    check('size').optional({nullable: true, checkFalsy: true}).isInt({gte: 1}).withMessage('Size must be greater than or equal to 1'),
+    check('maxLat').optional({nullable: true, checkFalsy: true}).isInt().withMessage('Maximum latitude is invalid'),
+    check('minLat').optional({nullable: true, checkFalsy: true}).isInt().withMessage('Minimum latitude is invalid'),
+    check('maxLng').optional({nullable: true, checkFalsy: true}).isInt().withMessage('Maximum longitude is invalid'),
+    check('minLng').optional({nullable: true, checkFalsy: true}).isInt().withMessage('Minimum longitude is invalid'),
+    check('maxPrice').optional({nullable: true, checkFalsy: true}).isInt({gte: 0}).withMessage('Maximum price must be greater than or equal to 0'),
+    check('minPrice').optional({nullable: true, checkFalsy: true}).isInt({gte: 0}).withMessage('Minimum price must be greater than or equal to 0'),
     handleValidationErrors
 ]
 
