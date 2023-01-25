@@ -51,11 +51,18 @@ const validateReviewImage = [
     handleValidationErrors
 ]
 
+const validateBooking = [
+    check('startDate').exists({ checkFalsy: true }).withMessage('Start date is required'),
+    check('endDate').exists({ checkFalsy: true }).withMessage('End date is required'),
+    handleValidationErrors
+]
+
 module.exports = {
     validateSignUp,
     validateCreateSpot,
     validateLogin,
     validateSpotImage,
     validateReview,
-    validateReviewImage
+    validateReviewImage,
+    validateBooking
 }
