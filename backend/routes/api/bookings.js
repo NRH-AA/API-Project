@@ -82,6 +82,35 @@ router.put('/:id', validateBooking, async (req, res) => {
         });
     };
     
+    if (startDate >= endDate) {
+        return res.status(400).json({
+            "message": "Validation error",
+            "statusCode": 400,
+            "errors": {
+                "endDate": "endDate cannot be on or before startDate"
+            }
+        });
+    };
+    
+    const bookings = await Booking.findAll({
+        where: {
+            spotId: req.params.spotId,
+            startDate: {[Op.gte]: startDate},
+            endDate: {[Op.lte]: endDate}
+        }
+    });
+    
+    if (bookings.length) {
+        return res.status(403).json({
+            "message": "Sorry, this spot is already booked for the specified dates",
+            "statusCode": 403,
+            "errors": {
+                "startDate": "Start date conflicts with an existing booking",
+                "endDate": "End date conflicts with an existing booking"
+            }
+        });
+    };
+    
     await booking.update({
         startDate,
         endDate
