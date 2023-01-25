@@ -27,7 +27,7 @@ router.get('/current', async (req, res) => {
         ]
     });
     
-    return res.json(reviews);
+    return res.status(200).json({"Reviews": reviews});
 });
 
 router.put('/:id', validateReview, async (req, res) => {

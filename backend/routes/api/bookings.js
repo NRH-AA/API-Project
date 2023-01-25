@@ -23,7 +23,7 @@ router.get('/current', async (req, res) => {
         where: {userId: user.id}
     });
     
-    return res.json(bookings);
+    return res.status(200).json({"Bookings": bookings});
 });
 
 // router.get('/:id', async (req, res) => {
