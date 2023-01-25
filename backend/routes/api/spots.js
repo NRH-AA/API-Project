@@ -13,17 +13,25 @@ const {
 } = require('./validations');
 
 // Get all Spots
-router.get('/', async (req, res) => {
-    // let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.body;
+router.get('/', validateGetSpots, async (req, res) => {
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
     
-    // page = parseInt(page);
-    // size = parseInt(size);
+    page = parseInt(page) || 1;
+    size = parseInt(size) || 20;
+    if (isNaN(page) || page === 0) page = 1;
+    if (isNaN(size) || size === 0) size = 20;
     
     const pagination = {};
-    // pagination.limit = size;
-    // pagination.offset = size * (page - 1);
+    pagination.limit = size;
+    pagination.offset = size * (page - 1);
     
     const where = {};
+    if (minLat) where.lat = {[Op.gte]: Number(minLat)};
+    if (maxLat) where.lat = {...where.lat, [Op.lte]: Number(maxLat)};
+    if (minLng) where.lng = {[Op.gte]: Number(minLng)};
+    if (maxLng) where.lng = {...where.lng, [Op.lte]: Number(maxLng)};
+    if (minPrice) where.price = {[Op.gte]: Number(minPrice)};
+    if (maxPrice) where.price = {...where.price, [Op.lte]: Number(maxPrice)};
     
     // const spots = await Spot.findAll({
     //     attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', [Sequelize.fn("AVG", Sequelize.col("stars")), "avgRating"], 'previewImage'],
