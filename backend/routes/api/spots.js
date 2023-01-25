@@ -53,7 +53,7 @@ router.get('/', validateGetSpots, async (req, res) => {
         spot.avgRating = Math.round(reviewStars / reviewCount);
     }
     
-    res.json(spots);
+    return res.status(200).json({"Spots": spots});
 })
 
 
@@ -76,7 +76,7 @@ router.get('/current', async (req, res) => {
         spot.avgRating = (ratings / reviews);
     }
     
-    return res.json(spots);
+    return res.status(200).json({"Spots": spots});
 });
 
 
@@ -374,7 +374,7 @@ router.get('/:spotId/reviews', async (req, res) => {
         reviewsJsons.push(reviewJson);
     };
     
-    return res.json(reviewsJsons);
+    return res.status(200).json({"Reviews": reviewsJsons});
 });
 
 router.get('/:spotId/bookings', async (req, res) => {
@@ -410,7 +410,7 @@ router.get('/:spotId/bookings', async (req, res) => {
         where: {spotId: req.params.spotId}
     });
     
-    return res.json(bookings);
+    return res.status(200).json({"Bookings": bookings});
 });
 
 // Create new booking
