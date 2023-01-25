@@ -45,11 +45,17 @@ const validateReview = [
     check('stars').isInt({gt: 0, lt: 6}).withMessage('Stars must be an integer from 1 to 5'),
     handleValidationErrors
 ]
-  
+
+const validateReviewImage = [
+    check('url').exists({ checkFalsy: true }).withMessage('Url is required'),
+    handleValidationErrors
+]
+
 module.exports = {
     validateSignUp,
     validateCreateSpot,
     validateLogin,
     validateSpotImage,
-    validateReview
+    validateReview,
+    validateReviewImage
 }
