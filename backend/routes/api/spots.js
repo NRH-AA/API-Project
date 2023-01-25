@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { User, Spot, SpotImage, Review, ReviewImage } = require('../../db/models');
+const { User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 const { Sequelize } = require('sequelize');
 
 const { validateCreateSpot, validateSpotImage, validateReview } = require('./validations');
@@ -340,5 +340,18 @@ router.get('/:spotId/reviews', async (req, res) => {
     
     return res.json(reviewsJsons);
 });
+
+router.get('/:spotId/bookings', async (req, res) => {
+    const bookings = await Booking.findAll({
+        include: {
+            model: User,
+            attributes: ['id', 'firstName', 'lastName']
+        },
+        where: {spotId: req.params.spotId}
+    });
+    
+    return res.json(bookings);
+});
+
 
 module.exports = router;
