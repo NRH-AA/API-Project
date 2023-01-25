@@ -45,11 +45,37 @@ const validateReview = [
     check('stars').isInt({gt: 0, lt: 6}).withMessage('Stars must be an integer from 1 to 5'),
     handleValidationErrors
 ]
-  
+
+const validateReviewImage = [
+    check('url').exists({ checkFalsy: true }).withMessage('Url is required'),
+    handleValidationErrors
+]
+
+const validateBooking = [
+    check('startDate').exists({ checkFalsy: true }).withMessage('Start date is required'),
+    check('endDate').exists({ checkFalsy: true }).withMessage('End date is required'),
+    handleValidationErrors
+]
+
+const validateGetSpots = [
+    check('page').isInt({gte: 1}).withMessage('Page must be greater than or equal to 1'),
+    check('size').isInt({gte: 1}).withMessage('Size must be greater than or equal to 1'),
+    check('maxLat').exists({ checkFalsy: true }).withMessage('Maximum latitude is invalid'),
+    check('minLat').exists({ checkFalsy: true }).withMessage('Minimum latitude is invalid'),
+    check('maxLng').exists({ checkFalsy: true }).withMessage('Maximum longitude is invalid'),
+    check('minLng').exists({ checkFalsy: true }).withMessage('Minimum longitude is invalid'),
+    check('maxPrice').isInt({gte: 0}).withMessage('Maximum price must be greater than or equal to 0'),
+    check('minPrice').isInt({gte: 0}).withMessage('Minimum price must be greater than or equal to 0'),
+    handleValidationErrors
+]
+
 module.exports = {
     validateSignUp,
     validateCreateSpot,
     validateLogin,
     validateSpotImage,
-    validateReview
+    validateReview,
+    validateReviewImage,
+    validateBooking,
+    validateGetSpots
 }
