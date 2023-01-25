@@ -342,6 +342,14 @@ router.get('/:spotId/reviews', async (req, res) => {
 });
 
 router.get('/:spotId/bookings', async (req, res) => {
+    const spot = await Spot.findByPk(req.params.id);
+    if (!spot) {
+        return res.status(404).json({
+            "message": "Spot couldn't be found",
+            "statusCode": 404
+        });
+    }
+    
     const bookings = await Booking.findAll({
         include: {
             model: User,
