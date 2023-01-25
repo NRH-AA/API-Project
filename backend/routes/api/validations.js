@@ -57,6 +57,18 @@ const validateBooking = [
     handleValidationErrors
 ]
 
+const validateGetSpots = [
+    check('page').isInt({gte: 1}).withMessage('Page must be greater than or equal to 1'),
+    check('size').isInt({gte: 1}).withMessage('Size must be greater than or equal to 1'),
+    check('maxLat').exists({ checkFalsy: true }).withMessage('Maximum latitude is invalid'),
+    check('minLat').exists({ checkFalsy: true }).withMessage('Minimum latitude is invalid'),
+    check('maxLng').exists({ checkFalsy: true }).withMessage('Maximum longitude is invalid'),
+    check('minLng').exists({ checkFalsy: true }).withMessage('Minimum longitude is invalid'),
+    check('maxPrice').isInt({gte: 0}).withMessage('Maximum price must be greater than or equal to 0'),
+    check('minPrice').isInt({gte: 0}).withMessage('Minimum price must be greater than or equal to 0'),
+    handleValidationErrors
+]
+
 module.exports = {
     validateSignUp,
     validateCreateSpot,
@@ -64,5 +76,6 @@ module.exports = {
     validateSpotImage,
     validateReview,
     validateReviewImage,
-    validateBooking
+    validateBooking,
+    validateGetSpots
 }

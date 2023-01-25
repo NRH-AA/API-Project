@@ -4,7 +4,13 @@ const router = express.Router();
 const { User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 const { Sequelize, Op } = require('sequelize');
 
-const { validateCreateSpot, validateSpotImage, validateReview, validateBooking } = require('./validations');
+const { 
+    validateCreateSpot, 
+    validateSpotImage, 
+    validateReview, 
+    validateBooking,
+    validateGetSpots
+} = require('./validations');
 
 // Get all Spots
 router.get('/', async (req, res) => {
@@ -19,7 +25,22 @@ router.get('/', async (req, res) => {
     //     spot.previewImage = previewImage && previewImage.url || "";
     // }
     
-    const spots = await Spot.findAll();
+    // let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.body;
+    
+    // page = parseInt(page);
+    // size = parseInt(size);
+    
+    const pagination = {};
+    // pagination.limit = size;
+    // pagination.offset = size * (page - 1);
+    
+    const where = {};
+    
+    
+    const spots = await Spot.findAll({
+        where,
+        ...pagination
+    });
     
     for (let spot of spots) {
         const reviewCount = await Review.count({where: {spotId: spot.id}});
