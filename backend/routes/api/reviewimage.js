@@ -1,17 +1,13 @@
 const express = require('express')
 const router = express.Router();
 
+const { requireAuth } = require('../../utils/auth');
+
 const { ReviewImage } = require('../../db/models');
 
-
-router.delete('/:id', async (req, res) => {
+// Delete a review image
+router.delete('/:id', requireAuth, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     const reviewImage = await ReviewImage.findByPk(req.params.id);
     if (!reviewImage) {
