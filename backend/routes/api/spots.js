@@ -88,7 +88,10 @@ router.get('/current', requireAuth, async (req, res, next) => {
         }
         
         const spotImages = await SpotImage.findOne({
-            where: {preview: true}
+            where: {
+                spotId: spot.id,
+                preview: true
+            }
         });
         
         if (!spotImages) spot.previewImage = "None"
