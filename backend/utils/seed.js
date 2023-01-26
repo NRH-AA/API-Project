@@ -21,9 +21,10 @@ const seedUsers = num => {
 const seedSpots = num => {
     const spots = new Array(num).fill('');
     
+    let id = 1;
     for (let i in spots) {
         spots[i] = {
-            ownerId: rNum(100),
+            ownerId: id,
             address: faker.address.streetAddress(),
             city: faker.address.cityName(),
             state: faker.address.state(),
@@ -34,6 +35,7 @@ const seedSpots = num => {
             description: faker.lorem.paragraph(),
             price: faker.datatype.number({ min: 50, max: 300})
         };
+        id++;
     };
     
     return spots;
@@ -42,12 +44,14 @@ const seedSpots = num => {
 const seedSpotImages = num => {
     const spotImages = new Array(num).fill('');
     
+    let id = 1;
     for (let i in spotImages) {
         spotImages[i] = {
-            spotId: rNum(100),
+            spotId: id,
             url: faker.image.imageUrl(),
-            preview: false
+            preview: true
         };
+        id++;
     };
     
     return spotImages;
@@ -56,13 +60,15 @@ const seedSpotImages = num => {
 const seedReviews = num => {
     const reviews = new Array(num).fill('');
     
+    let id = 1;
     for (let i in reviews) {
         reviews[i] = {
-            spotId: rNum(100),
-            userId: rNum(100),
+            spotId: id,
+            userId: rNum(10),
             review: faker.lorem.paragraph(),
             stars: rNum(5)
         };
+        id++;
     };
     
     return reviews;
@@ -71,11 +77,13 @@ const seedReviews = num => {
 const seedReviewImages = num => {
     const reviewImages = new Array(num).fill('');
     
+    let id = 1;
     for (let i in reviewImages) {
         reviewImages[i] = {
-            reviewId: rNum(200),
+            reviewId: id,
             url: faker.image.imageUrl()
         };
+        id++;
     };
     
     return reviewImages;
@@ -84,13 +92,15 @@ const seedReviewImages = num => {
 const seedBookings = num => {
     const bookings = new Array(num).fill('');
     
+    let id = 1;
     for (let i in bookings) {
         bookings[i] = {
-            spotId: rNum(100),
-            userId: rNum(100),
+            spotId: id,
+            userId: rNum(10),
             startDate: faker.date.between('2023-02-01', '2023-02-03'),
             endDate: faker.date.between('2023-02-04', '2023-02-07')
         };
+        id++;
     };
     
     return bookings;

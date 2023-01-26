@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { requireAuth } = require('../../utils/auth');
 
-const { SpotImage } = require('../../db/models');
+const { Spot, SpotImage } = require('../../db/models');
 
 // Delete a spot image
 router.delete('/:id', requireAuth, async (req, res, next) => {
@@ -17,7 +17,15 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
         });
     };
     
-    if (spotImage.userId !== user.id) {
+    const spot = await Spot.findByPk(spotImage.spotId);
+    if (!spot) {
+        return res.status(404).json({
+            "message": "Spot image is not longer valid",
+            "statusCode": 404
+        });
+    };
+    
+    if (spot.ownerId !== user.id) {
         return res.status(400).json({
             "message": "Authorization Error",
             "errors": "You can only delete your own spots image!"
