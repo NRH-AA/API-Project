@@ -51,8 +51,13 @@ router.get('/', validateGetSpots, async (req, res) => {
     
     for (let spot of spots) {
         const reviews = await Review.count({where: {spotId: spot.id}});
-        const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
-        spot.avgRating = (ratings / reviews).toPrecision(2);
+        
+        if (!reviews) {
+            spot.avgRating = "0.0"
+        } else {
+            const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
+            spot.avgRating = (ratings / reviews).toPrecision(2);
+        }
         
         const spotImages = await SpotImage.findOne({
             where: {preview: true}
@@ -73,14 +78,21 @@ router.get('/current', requireAuth, async (req, res, next) => {
     const spots = await Spot.findAll({where: {ownerId: user.id}});
     
     for (let spot of spots) {
-        const img = await SpotImage.findOne({
-            where: {preview: true, spotId: spot.id}
-        });
         const reviews = await Review.count({where: {spotId: spot.id}});
-        const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
         
-        if (img) spot.previewImage = img.url;
-        spot.avgRating = (ratings / reviews).toPrecision(2);
+        if (!reviews) {
+            spot.avgRating = "0.0"
+        } else {
+            const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
+            spot.avgRating = (ratings / reviews).toPrecision(2);
+        }
+        
+        const spotImages = await SpotImage.findOne({
+            where: {preview: true}
+        });
+        
+        if (!spotImages) spot.previewImage = "None"
+        else spot.previewImage = spotImages.toJSON().url;
     }
     
     return res.status(200).json({"Spots": spots});
