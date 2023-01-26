@@ -50,10 +50,17 @@ router.get('/', validateGetSpots, async (req, res) => {
     });
     
     for (let spot of spots) {
-        const reviewCount = await Review.count({where: {spotId: spot.id}});
-        const reviewStars = await Review.sum('stars', {where: {spotId: spot.id}});
-        spot.avgRating = Math.round(reviewStars / reviewCount);
-    }
+        const reviews = await Review.count({where: {spotId: spot.id}});
+        const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
+        spot.avgRating = (ratings / reviews).toPrecision(2);
+        
+        const spotImages = await SpotImage.findOne({
+            where: {preview: true}
+        });
+        
+        if (!spotImages) spot.previewImage = "None"
+        else spot.previewImage = spotImages.toJSON().url;
+    };
     
     return res.status(200).json({"Spots": spots});
 })
@@ -73,7 +80,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
         const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
         
         if (img) spot.previewImage = img.url;
-        spot.avgRating = (ratings / reviews);
+        spot.avgRating = (ratings / reviews).toPrecision(2);
     }
     
     return res.status(200).json({"Spots": spots});

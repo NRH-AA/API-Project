@@ -5,6 +5,7 @@ const { requireAuth } = require('../../utils/auth');
 const { validateBooking } = require('./validations');
 
 const { Booking, Spot } = require('../../db/models');
+const { Op } = require('sequelize');
 
 // Get users bookings
 router.get('/current', requireAuth, async (req, res, next) => {

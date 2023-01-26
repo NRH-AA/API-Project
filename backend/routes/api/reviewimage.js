@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { requireAuth } = require('../../utils/auth');
 
-const { ReviewImage } = require('../../db/models');
+const { Review, ReviewImage } = require('../../db/models');
 
 // Delete a review image
 router.delete('/:id', requireAuth, async (req, res, next) => {
@@ -17,7 +17,15 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
         });
     };
     
-    if (reviewImage.userId !== user.id) {
+    const review = await Review.findByPk(reviewImage.reviewId);
+    if (!review) {
+        return res.status(404).json({
+            "message": "Review image is not longer valid",
+            "statusCode": 404
+        });
+    };
+    
+    if (review.userId !== user.id) {
         return res.status(400).json({
             "message": "Authorization Error",
             "errors": "You can only delete your own review image!"
