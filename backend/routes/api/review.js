@@ -1,17 +1,14 @@
 const express = require('express')
 const router = express.Router();
 
-const { Review, User, Spot, ReviewImage } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
 const { validateReview, validateReviewImage } = require('./validations');
 
-router.get('/current', async (req, res) => {
+const { Review, Spot, ReviewImage } = require('../../db/models');
+
+// Get users reviews
+router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        })
-    }
     
     const reviews = await Review.findAll({
         where: {userId: user.id},
@@ -30,14 +27,9 @@ router.get('/current', async (req, res) => {
     return res.status(200).json({"Reviews": reviews});
 });
 
-router.put('/:id', validateReview, async (req, res) => {
+// Edit a review
+router.put('/:id', requireAuth, validateReview, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     const reviewItem = await Review.findByPk(req.params.id);
     if (!reviewItem) {
@@ -59,14 +51,8 @@ router.put('/:id', validateReview, async (req, res) => {
     await reviewItem.update({review, stars});
     return res.status(200).json(reviewItem);
 });
-router.patch('/:id', validateReview, async (req, res) => {
+router.patch('/:id', requireAuth, validateReview, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     const reviewItem = await Review.findByPk(req.params.id);
     if (!reviewItem) {
@@ -89,14 +75,9 @@ router.patch('/:id', validateReview, async (req, res) => {
     return res.status(200).json(reviewItem);
 });
 
-router.delete('/:id', async (req, res) => {
+// Delete a review
+router.delete('/:id', requireAuth, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     const reviewItem = await Review.findByPk(req.params.id);
     if (!reviewItem) {
@@ -120,15 +101,9 @@ router.delete('/:id', async (req, res) => {
     });
 });
 
-
-router.post('/:id/images', validateReviewImage, async (req, res) => {
+// Add image to a review
+router.post('/:id/images', requireAuth, validateReviewImage, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     const reviewItem = await Review.findByPk(req.params.id);
     if (!reviewItem) {

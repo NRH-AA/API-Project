@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 const { Sequelize, Op } = require('sequelize');
+const { requireAuth } = require('../../utils/auth');
 
-const { 
+const { User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
+
+const { // Validations
     validateCreateSpot, 
     validateSpotImage, 
     validateReview, 
@@ -58,10 +60,8 @@ router.get('/', validateGetSpots, async (req, res) => {
 
 
 // Get user spots
-router.get('/current', async (req, res) => {
+router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
-    
-    if (!user) return res.json({ user: null })
     
     const spots = await Spot.findAll({where: {ownerId: user.id}});
     
@@ -122,16 +122,10 @@ router.get('/:id', async (req, res) => {
 })
 
 // Create Spot
-router.post('/', validateCreateSpot, async (req, res) => {
-    const { address, city, state, country, lat, lng, name, description, price} = req.body;
+router.post('/', requireAuth, validateCreateSpot, async (req, res, next) => {
+    const { user } = req;
     
-    let { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        })
-    }
+    const { address, city, state, country, lat, lng, name, description, price} = req.body;
     
     const newSpot = await Spot.create({
         ownerId: user.id, address, city, state, country, lat, lng, name, description, price
@@ -149,16 +143,10 @@ router.post('/', validateCreateSpot, async (req, res) => {
 })
 
 // Edit Spot
-router.patch('/:id', validateCreateSpot, async (req, res) => {
-    const { address, city, state, country, lat, lng, name, description, price} = req.body;
+router.patch('/:id', requireAuth, validateCreateSpot, async (req, res, next) => {
+    const { user } = req;
     
-    let { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        })
-    }
+    const { address, city, state, country, lat, lng, name, description, price} = req.body;
     
     const spot = await Spot.findByPk(req.params.id);
     
@@ -166,23 +154,24 @@ router.patch('/:id', validateCreateSpot, async (req, res) => {
         return res.status(404).json({
             "message": "Spot couldn't be found",
             "statusCode": 404
-        })
-    }
+        });
+    };
+    
+    if (spot.ownerId !== user.id) {
+        return res.status(400).json({
+            "message": "You may only edit your own spots",
+            "statusCode": 400
+        });
+    };
     
     await spot.update({address, city, state, country, lat, lng, name, description, price});
     
     return res.json(spot);
 })
-router.put('/:id', validateCreateSpot, async (req, res) => {
-    const { address, city, state, country, lat, lng, name, description, price} = req.body;
+router.put('/:id', requireAuth, validateCreateSpot, async (req, res, next) => {
+    const { user } = req;
     
-    let { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        })
-    }
+    const { address, city, state, country, lat, lng, name, description, price} = req.body;
     
     const spot = await Spot.findByPk(req.params.id);
     
@@ -190,8 +179,15 @@ router.put('/:id', validateCreateSpot, async (req, res) => {
         return res.status(404).json({
             "message": "Spot couldn't be found",
             "statusCode": 404
-        })
-    }
+        });
+    };
+    
+    if (spot.ownerId !== user.id) {
+        return res.status(400).json({
+            "message": "You may only edit your own spots",
+            "statusCode": 400
+        });
+    };
     
     await spot.update({address, city, state, country, lat, lng, name, description, price});
     
@@ -199,14 +195,8 @@ router.put('/:id', validateCreateSpot, async (req, res) => {
 })
 
 // Delete Spot
-router.delete('/:id', async (req, res) => {
-    let { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        })
-    }
+router.delete('/:id', requireAuth, async (req, res, next) => {
+    const { user } = req;
     
     const spot = await Spot.findByPk(req.params.id);
     
@@ -220,14 +210,8 @@ router.delete('/:id', async (req, res) => {
 })
 
 // Add Image to Spot Id
-router.post('/:id/images', validateSpotImage, async (req, res) => {
-    let { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
+router.post('/:id/images', requireAuth, validateSpotImage, async (req, res, next) => {
+    const { user } = req;
     
     let { url, preview } = req.body;
     
@@ -271,14 +255,9 @@ router.post('/:id/images', validateSpotImage, async (req, res) => {
     return res.status(200).json(newImage);
 });
 
-router.delete('/:spotId/images/:imageId', async (req, res) => {
-    let { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
+// Delete image from spot
+router.delete('/:spotId/images/:imageId', requireAuth, async (req, res, next) => {
+    const { user } = req;
     
     const spot = await Spot.findByPk(req.params.spotId);
     if (!spot) {
@@ -311,14 +290,9 @@ router.delete('/:spotId/images/:imageId', async (req, res) => {
     });
 });
 
-router.post('/:spotId/reviews', validateReview, async (req, res) => {
+// Add review to spot
+router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     const spot = await Spot.findByPk(req.params.spotId);
     if (!spot) {
@@ -348,6 +322,7 @@ router.post('/:spotId/reviews', validateReview, async (req, res) => {
     return res.status(201).json(newReview);
 });
 
+// Get spot reviews
 router.get('/:spotId/reviews', async (req, res) => {
     const reviews = await Review.findAll({
         where: {spotId: req.params.spotId},
@@ -377,14 +352,9 @@ router.get('/:spotId/reviews', async (req, res) => {
     return res.status(200).json({"Reviews": reviewsJsons});
 });
 
-router.get('/:spotId/bookings', async (req, res) => {
+// Get spot bookings
+router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     const spot = await Spot.findByPk(req.params.spotId);
     if (!spot) {
@@ -394,7 +364,6 @@ router.get('/:spotId/bookings', async (req, res) => {
         });
     }
     
-    let bookings;
     let attributes;
     const include = {};
     if (spot.ownerId === user.Id) {
@@ -404,7 +373,7 @@ router.get('/:spotId/bookings', async (req, res) => {
         attributes = ['id', 'startDate', 'endDate'];
     }
     
-    bookings = await Booking.findAll({
+    const bookings = await Booking.findAll({
         attributes,
         ...include,
         where: {spotId: req.params.spotId}
@@ -414,14 +383,8 @@ router.get('/:spotId/bookings', async (req, res) => {
 });
 
 // Create new booking
-router.post('/:spotId/bookings', validateBooking, async (req, res) => {
+router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     let { startDate, endDate } = req.body;
     
@@ -481,6 +444,5 @@ router.post('/:spotId/bookings', validateBooking, async (req, res) => {
     
     return res.status(200).json(booking);
 });
-
 
 module.exports = router;

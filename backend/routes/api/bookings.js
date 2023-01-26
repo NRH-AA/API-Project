@@ -1,17 +1,14 @@
 const express = require('express')
 const router = express.Router();
 
-const { Booking, Spot } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
 const { validateBooking } = require('./validations');
 
-router.get('/current', async (req, res) => {
+const { Booking, Spot } = require('../../db/models');
+
+// Get users bookings
+router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     const bookings = await Booking.findAll({
         include: {
@@ -31,14 +28,9 @@ router.get('/current', async (req, res) => {
 //     res.json(booking);
 // });
 
-router.put('/:id', validateBooking, async (req, res) => {
+// Edit a booking
+router.put('/:id', requireAuth, validateBooking, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     let { startDate, endDate } = req.body;
     
@@ -118,14 +110,8 @@ router.put('/:id', validateBooking, async (req, res) => {
     
     return res.status(200).json(booking);
 });
-router.patch('/:id', validateBooking, async (req, res) => {
+router.patch('/:id', requireAuth, validateBooking, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     let { startDate, endDate } = req.body;
     
@@ -177,14 +163,9 @@ router.patch('/:id', validateBooking, async (req, res) => {
     return res.status(200).json(booking);
 });
 
-router.delete('/:id', async (req, res) => {
+// Delete a booking
+router.delete('/:id', requireAuth, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     const booking = await Booking.findByPk(req.params.id);
     if (!booking) {
@@ -194,12 +175,12 @@ router.delete('/:id', async (req, res) => {
         });
     };
     
-    // if (booking.userId !== user.id) {
-    //     return res.status(400).json({
-    //         "message": "Validation error",
-    //         "errors": "You can only delete your own bookings"
-    //     });
-    // };
+    if (booking.userId !== user.id) {
+        return res.status(400).json({
+            "message": "Validation error",
+            "errors": "You can only delete your own bookings"
+        });
+    };
     
     const today = new Date();
     if (booking.startDate <= today) {

@@ -2,36 +2,29 @@ const express = require('express')
 const router = express.Router();
 
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
+
 const { User } = require('../../db/models');
 
 
 // Log in
 const { validateLogin } = require('./validations');
 router.post('/', validateLogin, async (req, res, next) => {
-    const { credential, password } = req.body;
-
-    let { user } = req;
-    if (user) {
-      const err = new Error('Already Logged In');
-      err.status = 400;
-      err.title = 'Already Logged In';
-      err.errors = ['You have already logged in.'];
-      return next(err);
-    }
+  let { user } = req;
+  
+  const { credential, password } = req.body;
+  user = await User.login({ credential, password });
     
-    user = await User.login({ credential, password });
-    
-    if (!user) {
-      const err = new Error('Login failed');
-      err.status = 401;
-      err.title = 'Login failed';
-      err.errors = ['Invalid credentials.', 'statusCode: 401'];
-      return next(err);
-    }
+  if (!user) {
+    const err = new Error('Login failed');
+    err.status = 401;
+    err.title = 'Login failed';
+    err.errors = ['Invalid credentials.', 'statusCode: 401'];
+    return next(err);
+  }
 
-    await setTokenCookie(res, user);
+  await setTokenCookie(res, user);
 
-    return res.json({ user: user});
+  return res.json({ user: user});
 });
 
 // Log out

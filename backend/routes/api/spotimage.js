@@ -1,16 +1,13 @@
 const express = require('express')
 const router = express.Router();
 
+const { requireAuth } = require('../../utils/auth');
+
 const { SpotImage } = require('../../db/models');
 
-router.delete('/:id', async (req, res) => {
+// Delete a spot image
+router.delete('/:id', requireAuth, async (req, res, next) => {
     const { user } = req;
-    if (!user) {
-        return res.status(400).json({
-            "message": "Authorization Error",
-            "errors": "You must be logged in!"
-        });
-    };
     
     const spotImage = await SpotImage.findByPk(req.params.id);
     if (!spotImage) {
