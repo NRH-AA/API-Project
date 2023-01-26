@@ -18,7 +18,8 @@ const validateSignUp = [
     check('lastName').exists({ checkFalsy: true }).withMessage('Last name is required'),
     check('lastName').isLength({ min: 4 }).withMessage('Last name must be 4 or more characters'),
     check('lastName').not().isEmail().withMessage('Last name cannot be an email'),
-    check('password').exists({ checkFalsy: true }).isLength({ min: 6 }).withMessage('Password must be 6 characters or more.'),
+    check('password').exists({ checkFalsy: true }).withMessage('Password is required'),
+    check('password').isLength({ min: 6 }).withMessage('Password must be 6 characters or more.'),
     handleValidationErrors
 ]
 

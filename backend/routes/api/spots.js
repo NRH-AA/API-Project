@@ -166,7 +166,11 @@ router.patch('/:id', requireAuth, validateCreateSpot, async (req, res, next) => 
     
     await spot.update({address, city, state, country, lat, lng, name, description, price});
     
-    return res.json(spot);
+    const updatedSpot = await Spot.findByPk(spot.id, {
+        attributes: {exclude: ['avgRating', 'previewImage']}
+    });
+    
+    return res.json(updatedSpot);
 })
 router.put('/:id', requireAuth, validateCreateSpot, async (req, res, next) => {
     const { user } = req;
@@ -191,7 +195,11 @@ router.put('/:id', requireAuth, validateCreateSpot, async (req, res, next) => {
     
     await spot.update({address, city, state, country, lat, lng, name, description, price});
     
-    return res.json(spot);
+    const updatedSpot = await Spot.findByPk(spot.id, {
+        attributes: {exclude: ['avgRating', 'previewImage']}
+    });
+    
+    return res.json(updatedSpot);
 })
 
 // Delete Spot
