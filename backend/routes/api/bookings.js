@@ -4,7 +4,7 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { validateBooking } = require('./validations');
 
-const { Booking, Spot, SpotImage } = require('../../db/models');
+const { Booking, Spot, SpotImage, Review } = require('../../db/models');
 const { Op } = require('sequelize');
 
 // Get users bookings
@@ -15,27 +15,34 @@ router.get('/current', requireAuth, async (req, res, next) => {
         include: {
             model: Spot,
             attributes: {
-                exclude: ['description', 'avgRating', 'createdAt', 'updatedAt']
+                exclude: ['description', 'createdAt', 'updatedAt']
             }
         },
         where: {userId: user.id}
     });
     
-    const bookingJsons = [];
     for (let booking of bookings) {
-        const bookingJson = booking.toJSON();
+        const reviewsCount = await Review.count({where: {spotId: booking.Spot.id}});
         
-        const image = await SpotImage.findOne(
-            {where: {
-                spotId: bookingJson.Spot.id, preview: true
+        if (!reviewsCount) {
+            booking.Spot.avgRating = "0.0"
+        } else {
+            const ratings = await Review.sum('stars', {where: {spotId: booking.Spot.id}});
+            booking.Spot.avgRating = (ratings / reviewsCount).toPrecision(2);
+        }
+        
+        const spotImages = await SpotImage.findOne({
+            where: {
+                spotId: booking.Spot.id,
+                preview: true
             }
         });
         
-        bookingJson.Spot.previewImage = image && image.toJSON().url || "None";
-        bookingJsons.push(bookingJson);
+        if (!spotImages) booking.Spot.previewImage = "None"
+        else booking.Spot.previewImage = spotImages.toJSON().url;
     }
     
-    return res.status(200).json({"Bookings": bookingJsons});
+    return res.status(200).json({"Bookings": bookings});
 });
 
 // router.get('/:id', async (req, res) => {

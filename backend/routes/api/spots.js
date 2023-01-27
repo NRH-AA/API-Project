@@ -60,7 +60,10 @@ router.get('/', validateGetSpots, async (req, res) => {
         }
         
         const spotImages = await SpotImage.findOne({
-            where: {preview: true}
+            where: {
+                spotId: spot.id,
+                preview: true
+            }
         });
         
         if (!spotImages) spot.previewImage = "None"
