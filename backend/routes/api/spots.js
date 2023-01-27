@@ -108,7 +108,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 // Get Spot by ID
 router.get('/:id', async (req, res) => {
     const spot = await Spot.findByPk(req.params.id, {
-        attributes: {exclude: ['previewImage']},
+        attributes: {exclude: ['avgRating','previewImage']},
         // include: [
         //     {
         //         model: SpotImage, as: 'spotImages',
@@ -131,11 +131,17 @@ router.get('/:id', async (req, res) => {
     
     const spotData = spot.toJSON();
     const reviews = await Review.count({where: {spotId: spot.id}});
-    const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
-    spotData.numReviews = reviews;
-    spotData.avgStarRating = (ratings / reviews);
     
-    spotData.SpotImage = await SpotImage.findAll({
+    spotData.numReviews = reviews > 0 && reviews || 0;
+    
+    if (!reviews) {
+        spotData.avgStarRating = "0.0"
+    } else {
+        const ratings = await Review.sum('stars', {where: {spotId: spot.id}});
+        spotData.avgStarRating = (ratings / reviews).toPrecision(2);
+    }
+    
+    spotData.SpotImages = await SpotImage.findAll({
         attributes: ['id', 'url', 'preview'],
         where: {spotId: req.params.id}
     });
