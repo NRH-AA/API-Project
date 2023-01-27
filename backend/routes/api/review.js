@@ -4,7 +4,7 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { validateReview, validateReviewImage } = require('./validations');
 
-const { Review, Spot, ReviewImage } = require('../../db/models');
+const { Review, Spot, ReviewImage, SpotImage } = require('../../db/models');
 
 // Get users reviews
 router.get('/current', requireAuth, async (req, res, next) => {
@@ -23,6 +23,27 @@ router.get('/current', requireAuth, async (req, res, next) => {
             }
         ]
     });
+    
+    for (let review of reviews) {
+        const reviewsCount = await Review.count({where: {spotId: review.Spot.id}});
+        
+        if (!reviewsCount) {
+            review.Spot.avgRating = "0.0"
+        } else {
+            const ratings = await Review.sum('stars', {where: {spotId: review.Spot.id}});
+            review.Spot.avgRating = (ratings / reviewsCount).toPrecision(2);
+        }
+        
+        const spotImages = await SpotImage.findOne({
+            where: {
+                spotId: review.Spot.id,
+                preview: true
+            }
+        });
+        
+        if (!spotImages) review.Spot.previewImage = "None"
+        else review.Spot.previewImage = spotImages.toJSON().url;
+    }
     
     return res.status(200).json({"Reviews": reviews});
 });
