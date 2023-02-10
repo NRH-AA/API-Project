@@ -9,19 +9,11 @@ const { User } = require('../../db/models');
 // Log in
 const { validateLogin } = require('./validations');
 router.post('/', validateLogin, async (req, res, next) => {
-  // let { user } = req;
-  
   const { credential, password } = req.body;
-  user = await User.login({ credential, password });
-    
-  // if (!user) {
-  //   const err = new Error('Login failed');
-  //   err.status = 401;
-  //   err.title = 'Login failed';
-  //   err.errors = ['Invalid credentials.', 'statusCode: 401'];
-  //   return next(err);
-  // }
-
+  let user = await User.login({ credential, password });
+  
+  if (!user) res.status(400).json({ user: null});
+  
   await setTokenCookie(res, user);
 
   return res.json({ user: user});
