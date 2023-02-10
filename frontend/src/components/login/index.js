@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import Form from './form';
+import Form from './Form';
 
 const LoginForm = () => {
     const sessionUser = useSelector(state => state.session.user);
