@@ -11,11 +11,9 @@ const sessionLogin = (user) => ({
     user
 });
 
-const sessionLogout = () => ({
+export const sessionLogout = () => ({
     type: SESSION_LOGOUT
 });
-
-
 
 // Thunk Actions
 export const login = (user) => async dispatch => {
@@ -26,29 +24,25 @@ export const login = (user) => async dispatch => {
     
     if (res.ok) {
         const data = await res.json();
-        dispatch(sessionLogin(data));
+        dispatch(sessionLogin(data.user));
     };
     return res;
 };
 
-export const logout = () => async dispatch => {
-   const res = await csrfFetch('/api/session', {
-        method: 'DELETE'
-   });
-   
-   if (res.ok) {
-        dispatch(sessionLogout());
-   };
+export const restoreUser = () => async dispatch => {
+    const res = await csrfFetch('/api/session');
+    const data = await res.json();
+    dispatch(sessionLogin(data.user));
+    return res;
 };
 
 
 // Selectors
-
-const initialState = {}
+const initialState = { user: null }
 const sessionReducer = (state = initialState, action) => {
     switch (action.type) {
     case SESSION_LOGIN:
-        return {...state, ...action.user};
+        return {...state, user: {...action.user}};
         
     case SESSION_LOGOUT:
         return {...initialState};

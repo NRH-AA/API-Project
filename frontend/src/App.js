@@ -1,8 +1,18 @@
 import { Route, Switch } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from 'react';
 
-import User from './components/login';
+import * as sessionActions from "./store/session";
+
+import LoginForm from './components/login';
 
 function App() {
+  const dispatch = useDispatch();
+  const [isLoaded, setIsLoaded] = useState(false);
+  useEffect(() => {
+    dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
+  }, [dispatch]);
+  
   return (
     <Switch>
       <Route exact path="/">
@@ -10,7 +20,7 @@ function App() {
       </Route>
       
       <Route path="/login">
-        <User />
+        <LoginForm />
       </Route>
       
     </Switch>

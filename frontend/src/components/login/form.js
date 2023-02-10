@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
+import './form.css';
 
 const Form = () => {
     const dispatch = useDispatch();
@@ -29,22 +30,20 @@ const Form = () => {
                 </ul>
             </div>
             
-            <form onSubmit={submitForm}>
+            <form className="loginForm" onSubmit={submitForm}>
                 
                 <label htmlFor='credential'>Username or Email</label>
-                <br></br>
                 <input type='text' name='credential' value={credential} 
                     onChange={(e) => setCredential(e.target.value)} 
                 />
-                <br></br>
-                <br></br>
+                
                 <label htmlFor='credential'>Password</label>
-                <br></br>
                 <input type='password' value={password} 
                     onChange={(e) => setPassword(e.target.value)} 
                 />
+                
                 <br></br>
-                <button type="submit">Submit</button>
+                <button type="submit">Login</button>
             </form>
         </div>
     );
