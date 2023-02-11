@@ -4,6 +4,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+import './Navigation.css';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -45,23 +46,23 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} hidden={showMenu ? false : true} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
-            <li>{user.email}</li>
-            <li>
+            <li className="profile-dropdown-li">{user.username}</li>
+            <li className="profile-dropdown-li">{user.firstName} {user.lastName}</li>
+            <li className="profile-dropdown-li">{user.email}</li>
+            <li className="profile-dropdown-li">
               <button onClick={logout}>Log Out</button>
             </li>
           </>
         ) : (
           <>
-            <li>
+            <li className="profile-dropdown-li">
               <OpenModalButton
                 buttonText="Log In"
                 modalComponent={<LoginFormModal />}
                 onButtonClick={() => setShowMenu(false)}
               />
             </li>
-            <li>
+            <li className="profile-dropdown-li">
               <OpenModalButton
                 buttonText="Sign Up"
                 modalComponent={<SignupFormModal />}
