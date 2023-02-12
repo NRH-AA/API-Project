@@ -1,0 +1,24 @@
+.spots-div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.spots-div-wrap {
+    
+}
+
+.spotImg {
+    width: fill;
+    height: 270px;
+}
+
+.spotLink {
+    flex: 22%;
+    height: 330px;
+}
+
+.spotSpan {
+   display: block;
+   margin-top: 5px;
+}

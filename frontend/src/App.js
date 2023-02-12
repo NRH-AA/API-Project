@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
+import SpotComponent from './components/Spots';
+import SingleSpot from './components/Spots/SingleSpot';
 
 function App() {
   const dispatch = useDispatch();
@@ -18,6 +20,14 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route exact path="/">
+            <SpotComponent />
+          </Route>
+          
+          <Route path="/spots/:spotId">
+            <SingleSpot />
+          </Route>
+          
         </Switch>
       )}
     </>
