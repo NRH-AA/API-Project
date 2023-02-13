@@ -1,11 +1,12 @@
+
+.singleSpot-wrapper {
+    padding: 20px;
+}
+
 .spots-div {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-}
-
-.spots-div-wrap {
-    
 }
 
 .spotImg {
@@ -21,4 +22,50 @@
 .spotSpan {
    display: block;
    margin-top: 5px;
+}
+
+.spot-images-div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    width: auto;
+}
+
+.previewImg-div {
+    flex: 50%;
+    min-width: 380px;
+}
+
+.previewImg {
+    height: 412px;
+    width: 100%;
+}
+
+.images-div {
+    flex: 49%;
+}
+
+.images {
+    height: 205px;
+    width: 50%;
+}
+
+.spot-desc-div {
+    display: flex;
+    gap: 100px;
+    border-bottom: 1px solid black;
+    padding-bottom: 20px;
+}
+
+.spot-desc {
+    flex: 60%;
+}
+
+.spot-reserve {
+    flex: 30%;
+    border: 2px solid black;
+    height: 100px;
+    min-width: 320px;
+    max-width: 320px;
+    border-radius: 20px;
 }
