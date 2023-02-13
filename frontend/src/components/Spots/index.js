@@ -18,15 +18,16 @@ const SpotComponent = () => {
         <div className="spots-div">
             {spots?.map(spot => 
             <Link className="spotLink" to={"/spots/" + spot.id} props={spot.id}>
-                <div className="spots-div-wrap">
+                <div>
                     <img className="spotImg" src={spot.previewImage} alt={spot.name}></img>
                     
-                    <div>
-                        <span>{spot.city + ", " + spot.state}</span>
-                        <span className="spotSpan"><b>{"$" + spot.price}</b> 
-                        {" " + "night"}
-                        </span>
+                    <div className="spots-desc-div">
+                        <p className="spots-desc-div-p1">{spot.city + ", " + spot.state}</p>
+                        <p className="spots-desc-div-p1">{'⭐' + spot.avgRating}</p>
                     </div>
+                    <p className="spots-desc-div-p2"><b>{"$" + spot.price}</b> 
+                    {" " + "night"}
+                    </p>
                 </div>
             </Link>
             )}
