@@ -4,6 +4,8 @@ const { handleValidationErrors } = require('../../utils/validation');
 const validateLogin = [
     check('credential').exists({ checkFalsy: true }).notEmpty().withMessage('Email or username is required'),
     check('password').exists({ checkFalsy: true }).withMessage('Password is required.'),
+    check('credential').isLength({ min: 4 }).withMessage('Username or email must be 4 or more characters'),
+    check('password').isLength({ min: 6 }).withMessage('Password must be 6 or more characters'),
     handleValidationErrors
 ];
 

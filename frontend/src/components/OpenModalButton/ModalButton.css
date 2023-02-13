@@ -1,0 +1,12 @@
+.signup-button {
+    background-color: white;
+    border: none;
+    margin-left: -40px;
+    width: 220px;
+    height: 30px;
+    text-align: left;
+}
+
+.signup-button:hover {
+    background-color: rgb(245, 243, 235);
+}

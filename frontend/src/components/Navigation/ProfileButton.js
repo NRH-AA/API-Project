@@ -4,6 +4,9 @@ import * as sessionActions from '../../store/session';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+import './Navigation.css';
+import ProfileMenu from './images/menu.png';
+import ProfileImage from './images/profile_button.png';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -39,9 +42,12 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={openMenu}>
-        <i className="fas fa-user-circle" />
-      </button>
+        <button className="profile-button" onClick={openMenu}>
+          <div className="profile-menu-div">
+            <img className="profile-menu-img" src={ProfileMenu} alt="profile menu"></img>
+            <img className="profile-button-img" src={ProfileImage} alt="profile menu"></img>
+          </div>
+        </button>
       <ul className={ulClassName} hidden={showMenu ? false : true} ref={ulRef}>
         {user ? (
           <>
@@ -54,20 +60,18 @@ function ProfileButton({ user }) {
           </>
         ) : (
           <>
-            <li>
-              <OpenModalButton
-                buttonText="Log In"
-                modalComponent={<LoginFormModal />}
-                onButtonClick={() => setShowMenu(false)}
-              />
-            </li>
-            <li>
+            <div className="signup-div">
               <OpenModalButton
                 buttonText="Sign Up"
                 modalComponent={<SignupFormModal />}
                 onButtonClick={() => setShowMenu(false)}
-              />
-            </li>
+                />
+              <OpenModalButton
+                buttonText="Log In"
+                modalComponent={<LoginFormModal />}
+                onButtonClick={() => setShowMenu(false)}
+                />
+            </div>
           </>
         )}
       </ul>

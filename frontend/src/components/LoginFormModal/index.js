@@ -2,6 +2,7 @@ import { useState } from 'react';
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { Redirect } from 'react-router-dom';
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -10,9 +11,10 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     setErrors([]);
     return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal)
@@ -23,36 +25,53 @@ function LoginFormModal() {
         }
       );
   };
-
+  
+  function demoLogin(e) {
+    e.preventDefault();
+    
+    dispatch(sessionActions.login({ credential: "Demo", password: "password" }));
+    return closeModal();
+  }
+  
+  const buttonDisabled = () => credential.length === 0 ||
+                               password.length === 0;
+  
+  
+                               
   return (
     <>
+    <div className='login-wrapper'>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
-        <ul>
+        <ul className='error-ul'>
           {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
+            <li className="error-li" key={idx}>{error}</li>
+            ))}
         </ul>
-        <label>
-          Username or Email
           <input
+            className='login-input'
             type="text"
+            placeholder='Username or Email'
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
-          />
-        </label>
-        <label>
-          Password
+            />
           <input
+            className='login-input'
             type="password"
+            placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-          />
-        </label>
-        <button type="submit">Log In</button>
+            />
+        <button disabled={buttonDisabled()} className="login-button" type="submit">Log In</button>
       </form>
+      
+      <form className="demoForm" onSubmit={demoLogin}>
+        <button className='demoLogin'>Demo User</button>
+      </form>
+      
+      </div>
     </>
   );
 }
