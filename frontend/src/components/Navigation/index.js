@@ -8,7 +8,7 @@ function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-      <div className="topbar-ul">
+      <div className="topbar">
           <div className="topbar-home">
             <NavLink exact to="/">
             <img src={Logo} alt="logo">
