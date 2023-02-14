@@ -12,7 +12,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = 'Users';
     
-    const users = seedUsers(10);
+    const users = seedUsers(5);
     users.push({
       email: 'demo@mail.com',
       username: 'Demo',

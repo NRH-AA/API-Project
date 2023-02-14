@@ -48,7 +48,7 @@ const seedSpotImages = num => {
     for (let i in spotImages) {
         spotImages[i] = {
             spotId: id,
-            url: faker.image.imageUrl(),
+            url: faker.image.business(),
             preview: true
         };
         id++;
