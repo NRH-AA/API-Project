@@ -31,9 +31,7 @@ const setUserSpots = (spots) => ({
 
 
 export const getAllSpots = () => async dispatch => {
-    const res = await csrfFetch('/api/spots', {
-        method: 'GET',
-    });
+    const res = await csrfFetch('/api/spots');
     
     if (res.ok) {
         const data = await res.json();
@@ -53,7 +51,7 @@ export const getSpot = (spotId) => async dispatch => {
 };
 
 export const getUserSpots = () => async dispatch => {
-  const res = await csrfFetch(`/api/spots/current`);
+  const res = await csrfFetch('/api/spots/current');
   
   if (res.ok) {
     const data = await res.json();
@@ -90,13 +88,15 @@ export const createSpot = (data, images) => async dispatch => {
 
 
 export const getSpotsState = (state) => state.spots;
+export const getAllSpotsState = (state) => state.spots.allSpots;
 export const getSpotRedirect = (state) => state.spots.redirect;
+export const getUserSpotsState = (state) => state.spots.userSpots;
 
 const initialState = {}
 const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_ALL_SPOTS:
-            return {...state, allSpots: [...action.spots]};
+            return {...state, allSpots: [...action.spots], userSpots: null};
       
         case SET_SPOT:
             return {...state, singleSpot: {...action.spot}, redirect: null}
@@ -105,7 +105,7 @@ const spotsReducer = (state = initialState, action) => {
             return {...state, singleSpot: null, redirect: action.spot.id};
             
         case SET_USER_SPOTS:
-            return {...state, allSpots: null, userSpots: [...action.spots.Spots]};
+            return {...state, userSpots: [...action.spots.Spots]};
             
         default:
             return state;

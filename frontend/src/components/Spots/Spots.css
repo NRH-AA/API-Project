@@ -10,11 +10,9 @@
     padding-left: 80px;
 }
 
-.spotLink {
+.spot-div {
     flex-basis: 24%;
     height: 350px;
-    text-decoration: none;
-    color: black;
 }
 
 .allSpots-img {
