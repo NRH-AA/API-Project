@@ -60,6 +60,8 @@ export const logout = () => async (dispatch) => {
 };
 
 
+export const getUserState = (state) => state.session.user;
+
 // Selectors
 const initialState = { user: null }
 const sessionReducer = (state = initialState, action) => {

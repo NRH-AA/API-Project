@@ -10,6 +10,11 @@
     padding-left: 80px;
 }
 
+.spot-div {
+    flex-basis: 24%;
+    height: 350px;
+}
+
 .spotLink {
     flex-basis: 24%;
     height: 350px;
@@ -41,7 +46,8 @@
 
 .allSpots-button {
     border: 1px solid rgb(228, 228, 228);
-    box-shadow: 0px 0px 1px 2px rgb(172, 172, 172);
+    background-color: rgb(241, 241, 241);
+    box-shadow: 0px 0px 1px 2px rgb(223, 223, 223);
     cursor: pointer;
     text-decoration: none;
     color: black;
@@ -113,7 +119,6 @@
 .create-spot-wrapper {
     margin: auto;
     width: 380px;
-    font-family: sans-serif;
 }
 
 #create-spot-top {

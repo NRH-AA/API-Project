@@ -10,10 +10,10 @@ function Navigation({ isLoaded }){
   return (
       <div className="topbar">
           <div className="topbar-home">
-            <NavLink exact to="/">
+            <Link to="/">
             <img className="logoImg" src={Logo} alt="logo">
             </img>
-            </NavLink>
+            </Link>
           </div>
           
           <div className="topbar-profile">
