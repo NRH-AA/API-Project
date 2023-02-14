@@ -1,6 +1,5 @@
 import { csrfFetch } from './csrf';
 
-
 const SESSION_LOGIN = 'session/LOGIN';
 const SESSION_LOGOUT = 'session/LOGOUT';
 

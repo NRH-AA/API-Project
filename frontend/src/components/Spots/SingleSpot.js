@@ -7,6 +7,7 @@ import './Spots.css';
 const SingleSpot = () => {
     const { spotId } = useParams();
     const spotsState = useSelector(getSpotsState);
+    
     const spot = spotsState.singleSpot ? spotsState.singleSpot : null;
     const spotImages = spot ? [...spotsState.singleSpot.SpotImages] : null;
     const spotOwner = spot ? spotsState.singleSpot.Owner : null;
@@ -17,8 +18,6 @@ const SingleSpot = () => {
       dispatch(getSpot(spotId));
     }, [dispatch])
     
-    
-    
     function getSpotLocation() {
       return (
         <p>{spot ? spot.city + ", " + spot.state + ", " + spot.country : ''}</p>
@@ -27,7 +26,7 @@ const SingleSpot = () => {
     
     function getSpotOwner() {
       return (
-        <h2>{spotOwner ? 'Hosted by ' + spotOwner.firstname + ' ' + spotOwner.lastName : ''}</h2>
+        <h2>{spotOwner ? 'Hosted by ' + spotOwner.firstName + ' ' + spotOwner.lastName : ''}</h2>
       );
     };
     
@@ -61,7 +60,7 @@ const SingleSpot = () => {
               </div>
               
               <div className="images-div">
-                {spotImages?.map(img => <img className="images" src={img.url}></img>)}
+                {spotImages?.map(img => <img className="images" key={img.url} src={img.url}></img>)}
               </div>
             </div>
             

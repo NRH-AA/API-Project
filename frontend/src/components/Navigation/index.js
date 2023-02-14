@@ -11,14 +11,14 @@ function Navigation({ isLoaded }){
       <div className="topbar">
           <div className="topbar-home">
             <NavLink exact to="/">
-            <img src={Logo} alt="logo">
+            <img className="logoImg" src={Logo} alt="logo">
             </img>
             </NavLink>
           </div>
           
           <div className="topbar-profile">
             {sessionUser && (
-              <Link to="/spots/create" className="create-spot">Create a New Spot</Link>
+              <Link to="/spots/new" className="create-spot">Create a New Spot</Link>
             )}
             
             {isLoaded && (

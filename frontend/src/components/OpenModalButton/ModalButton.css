@@ -1,10 +1,10 @@
 .signup-button {
-    background-color: white;
-    border: none;
-    margin-left: -40px;
-    width: 220px;
-    height: 30px;
-    text-align: left;
+    width: 150px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid rgb(228, 228, 228);
+    box-shadow: 0px 0px 1px 2px rgb(172, 172, 172);
+    cursor: pointer;
 }
 
 .signup-button:hover {

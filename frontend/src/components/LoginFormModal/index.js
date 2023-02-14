@@ -34,9 +34,7 @@ function LoginFormModal() {
   
   const buttonDisabled = () => credential.length === 0 ||
                                password.length === 0;
-  
-  
-                               
+                        
   return (
     <>
     <div className='login-wrapper'>
