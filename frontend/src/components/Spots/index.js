@@ -11,6 +11,8 @@ const SpotComponent = () => {
     
     const dispatch = useDispatch();
     
+    if (!spots) dispatch(getAllSpots());
+    
     useEffect(() => {
         dispatch(getAllSpots());
     }, [dispatch])
