@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getUserSpots, getUserSpotsState } from '../../store/spots';
@@ -6,10 +6,16 @@ import './Spots.css';
 
 const UserSpotsComponent = () => {
     const userSpots = useSelector(getUserSpotsState);
+    const [loaded, setLoaded] = useState(false)
     
     const spots = userSpots ? userSpots : null;
     
     const dispatch = useDispatch();
+    
+    if (!loaded) {
+        dispatch(getUserSpots());
+        setLoaded(true);
+    }
     
     useEffect(() => {
         dispatch(getUserSpots());
