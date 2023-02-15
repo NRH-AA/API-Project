@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import { useState } from "react";
 import { useModal } from "../../context/Modal";
-// import './UpdateSpot.css';
+import './UpdateSpot.css';
 
 
 const UpdateSpotModal = () => {
@@ -54,22 +54,6 @@ const UpdateSpotModal = () => {
         if (!name) err.name = "Name is required";
         if (!price) err.price = "Price is required";
         
-        if (image1 && !image1.endsWith('.png') && !image1.endsWith('.jpg') && !image1.endsWith('.jpeg')) {
-            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
-        }
-        if (image2 && !image2.endsWith('.png') && !image2.endsWith('.jpg') && !image2.endsWith('.jpeg')) {
-            err.image2 = "Image URL must end in .png, .jpg, or .jpeg"
-        }
-        if (image3 && !image3.endsWith('.png') && !image3.endsWith('.jpg') && !image3.endsWith('.jpeg')) {
-            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
-        }
-        if (image4 && !image4.endsWith('.png') && !image4.endsWith('.jpg') && !image4.endsWith('.jpeg')) {
-            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
-        }
-        if (image5 && !image5.endsWith('.png') && !image5.endsWith('.jpg') && !image5.endsWith('.jpeg')) {
-            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
-        }
-        
         return err;
     }
     
@@ -97,14 +81,7 @@ const UpdateSpotModal = () => {
             lng
         };
         
-        const imageData = [];
-        if (image1) imageData.push({url: image1, preview: true});
-        if (image2) imageData.push({url: image2, preview: false});
-        if (image3) imageData.push({url: image3, preview: false});
-        if (image4) imageData.push({url: image4, preview: false});
-        if (image5) imageData.push({url: image5, preview: false});
-        
-        dispatch(spotActions.updateSpot(spotData, imageData))
+        dispatch(spotActions.updateSpot(spotData, []))
         .catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) setErrors(data.errors);
@@ -116,9 +93,7 @@ const UpdateSpotModal = () => {
     
     return (
         <div className="create-spot-wrapper">
-            <h2>Create a new Spot</h2>
-            <h3>Where's your place located?</h3>
-            <p id="where-p">Guests will only get your exact address once they booked a reservation.</p>
+            <h2>Update your Spot</h2>
             
             <div>
                 <ul>
@@ -159,10 +134,7 @@ const UpdateSpotModal = () => {
                 </div>
                 
                 <div>
-                    <h3>Describe your place to guests</h3>
-                    <p className="desc-p">Mention the best features of your space, any special amentities
-                        like fast wifi or parking, and what you love about the neighborhood.
-                    </p>
+                    <h3>Description</h3>
                     
                     <div id="desc-div">
                         <textarea id="desc-textarea" name="description" value={description}
@@ -175,10 +147,7 @@ const UpdateSpotModal = () => {
                 </div>
                 
                 <div id="title-div">
-                    <h3>Create a title for your spot</h3>
-                    <p className="desc-p">Catch guests' attention with a spot title that highlights what
-                        makes your place special.
-                    </p>
+                    <h3>Title</h3>
                     
                     <div>
                         <input className="create-spot-input2" type='text' value={name}
@@ -190,6 +159,7 @@ const UpdateSpotModal = () => {
                 </div>
                 
                 <div id="price-div">
+                    <h3 id="price-h3">Price per night</h3>
                     <span>$ </span><input id="price-input" type="text" value={price}
                         placeholder='price'
                         onChange={(e) => setPrice(e.target.value)}
@@ -197,7 +167,7 @@ const UpdateSpotModal = () => {
                     <span className="error-msg">{formErrors.price ? formErrors.price : ''}</span>
                 </div>
                 
-                <div id="images-div">
+                {/* <div id="images-div">
                     <input className="imageUrl-input" type="text" placeholder='Preview Image URL' value={image1}
                         onChange={(e) => setImage1(e.target.value)}
                     ></input>
@@ -223,10 +193,11 @@ const UpdateSpotModal = () => {
                     ></input>
                     <span className="error-msg">{formErrors.image5 ? formErrors.image5 : ''}</span>
                     
-                </div>
+                </div> */}
                 
-                <div id="create-spot-button-div">
-                    <button id="create-spot-button" type="submit">Update</button>
+                <div id="update-spot-button-div">
+                    <button className="update-spot-button" type="submit">Update</button>
+                    <button className="update-spot-button" onClick={closeModal}>Cancel</button>
                 </div>
                 
             </form>

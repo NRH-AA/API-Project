@@ -50,6 +50,13 @@ const SingleSpot = () => {
       }
     }
     
+    const getStarReviewsText = () => {
+      if (!spot) return ('');
+      if (spot.numReviews === 1) return `${spot?.avgStarRating + ' *'}  ${spot?.numReviews} Review`;
+      if (spot.numReviews === 0) return ` New`;
+      return `${spot?.avgStarRating + ' *'}  ${spot?.numReviews} Reviews`
+  }
+    
     const displayEditButtons = () => {
       if (spot && userState && userState.id === spot.ownerId) {
         return (
@@ -108,7 +115,12 @@ const SingleSpot = () => {
               
               <div className="spot-reserve">
                 <div id="spot-reserve-div">
-                  <p><span id="spot-reserve-span">{spot ? "$" + spot.price : ''}</span> {spot ? ' night' : ''}</p>
+                  
+                  <div id="spot-reserve-text">
+                    <p><span id="spot-reserve-span">{spot ? "$" + spot.price : ''}</span> {spot ? ' night' : ''}</p>
+                    <b>⭐{getStarReviewsText()}</b>
+                  </div>
+                  
                   <button id="spot-reserve-button" onClick={() => alert('Feature not implimented.')}>Reserve</button>
                 </div>
               </div>

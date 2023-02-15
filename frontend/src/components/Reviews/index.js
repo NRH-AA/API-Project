@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import * as reviewActions from '../../store/reviews'
 import { getSingleSpotState } from '../../store/spots'
 import { getUserState } from '../../store/session';
+import OpenModalButton from "../OpenModalButton";
+import CreateReviewModal from "./CreateReview";
+import DeleteReviewModal from "./DeleteReview";
+import UpdateReviewModal from "./UpdateReview";
 import './Reviews.css';
+import Star from './images/star.png';
 
 const ReviewsComponent = ({ spotId }) => {
     const dispatch = useDispatch();
@@ -27,23 +32,66 @@ const ReviewsComponent = ({ spotId }) => {
         return `${spotData?.avgStarRating + ' *'}  ${spotData?.numReviews} Reviews`
     }
     
+    function getStars(num) {
+        const starImgs = [];
+        for (let i = 1; i <= num; i++) {
+            starImgs.push(<img key={i} src={Star}/>)
+        }
+        return starImgs;
+    };
+    
+    const showPostReview = () => {
+        if (reviewData) {
+            for (let i in reviewData) {
+                if (reviewData[i].userId === userData.id) return false;
+            }
+        }
+        return true;
+    }
+    
     return (
         <div id="reviews-wrapper">
             <h3>⭐
             {getStarReviewsText()}
-            <div><button>Post your review</button></div>
-            {spotData?.numReviews === 0 ? 
-            <p>Be the first to post a review</p>
-            : ''}
+            
+            {spotData?.ownerId !== userData?.id ? 
+                <>  
+                    {userData ?
+                        <>
+                        {showPostReview() ?
+                            <div>
+                                <OpenModalButton
+                                    spotId={spotId}
+                                    className="create-review-button"
+                                    buttonText="Post Your Review"
+                                    modalComponent={<CreateReviewModal />}
+                                />
+                            </div> 
+                        : ''}
+                        
+                        {spotData?.numReviews === 0 ? 
+                            <p>Be the first to post a review</p>
+                        : ''}
+                        </>
+                    : <p>Log in to post a review</p>}
+                </>
+            :<p>Your spot has no reviews yet</p>}
             
             </h3>
             
             {reviewData?.map(el => {
             return (
-                <div>
-                    <p className="reviews-name-p">
-                        {el.User?.firstName + ' ' + el.User?.lastName}
-                    </p>
+                <div key={el.id}>
+                    <div id="reviews-stars-div">
+                        <p className="reviews-name-p">
+                            {el.User?.firstName}
+                        </p>
+                        
+                        {el.stars ? 
+                            getStars(el.stars)
+                        : ''}
+                    </div>
+                    
                     <p className="reviews-date-p">
                         {formatDate(el.updatedAt)}
                     </p>
@@ -52,8 +100,18 @@ const ReviewsComponent = ({ spotId }) => {
                     
                     {el?.userId === userData?.id ?
                     <div className="reviews-button-div">
-                        <button className="reviews-button">Update</button>
-                        <button className="reviews-button">Delete</button>
+                        <OpenModalButton
+                            spotId={el.id}
+                            className="reviews-button"
+                            buttonText="Update"
+                            modalComponent={<UpdateReviewModal spotId={spotId}/>}
+                        />
+                        <OpenModalButton
+                            spotId={el.id}
+                            className="reviews-button"
+                            buttonText="Delete"
+                            modalComponent={<DeleteReviewModal spotId={spotId}/>}
+                        />
                     </div>
                     : ''}
                 </div>

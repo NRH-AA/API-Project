@@ -81,6 +81,8 @@ export const createSpot = (data, images) => async dispatch => {
                 body: JSON.stringify({url: image.url, preview: image.preview})
             });
         });
+        
+        dispatch(getSpot(spotData.id));
     };
     
     return res;

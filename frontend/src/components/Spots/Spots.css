@@ -144,6 +144,13 @@
     margin-left: 20px;
 }
 
+#spot-reserve-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+
 #spot-reserve-span {
     font-size: 18px;
     font-weight: 900;
@@ -249,9 +256,15 @@
 }
 
 #create-spot-button-div {
-    width: 380px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
 }
 
-#create-spot-button {
-    margin: right;
+.create-spot-button {
+    width: 120px;
+    height: 25px;
+    border: 1px solid rgb(209, 209, 209);
+    box-shadow: 1px 1px 1px 1px rgb(209, 209, 209);
+    cursor: pointer;
 }
