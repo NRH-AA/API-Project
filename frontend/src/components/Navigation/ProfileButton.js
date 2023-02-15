@@ -65,6 +65,7 @@ function ProfileButton({ user }) {
           <>
             <div>
               <OpenModalButton
+                className="signup-button"
                 buttonText="Sign Up"
                 modalComponent={<SignupFormModal />}
                 onButtonClick={() => setShowMenu(false)}
@@ -72,6 +73,7 @@ function ProfileButton({ user }) {
               </div>
             <div>
               <OpenModalButton
+                className="signup-button"
                 buttonText="Log In"
                 modalComponent={<LoginFormModal />}
                 onButtonClick={() => setShowMenu(false)}

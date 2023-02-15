@@ -1,0 +1,19 @@
+#delete-spot-div {
+    height: 80px;
+    width: 400px;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+#delete-spot-button-div {
+    display: flex;
+    justify-content: space-around;
+}
+
+.delete-spot-button {
+    width: 150px;
+    height: 25px;
+    border: 1px solid rgb(209, 209, 209);
+    box-shadow: 1px 1px 1px 1px rgb(209, 209, 209);
+    cursor: pointer;
+}

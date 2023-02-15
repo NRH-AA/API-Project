@@ -61,7 +61,7 @@ module.exports = {
         defaultValue: 0
       },
       previewImage: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
         defaultValue: ''
       },

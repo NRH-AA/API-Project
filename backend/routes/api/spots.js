@@ -269,6 +269,13 @@ router.post('/:id/images', requireAuth, validateSpotImage, async (req, res, next
         });
     };
     
+    const spotImagesCount = await SpotImage.count({where: {spotId: req.params.id}});
+    if (spotImagesCount === 5) {
+        return res.status(400).json({
+            "message": "Bad Request",
+            "errors": "You may only have 5 spot images"
+        });
+    };
     
     if (preview) {
         spot.previewImage = url;
