@@ -43,13 +43,28 @@
     box-shadow: 0px 0px 1px 2px rgb(177, 177, 177);
 }
 
-.user-spots-link {
+#user-profile-link-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     width: fill;
-    text-align: center;
+    margin-bottom: 10px;
+}
+
+.user-spots-link {
     text-decoration: none;
     color: black;
+}
+
+.user-spots-link-1 {
+    margin-top: 5px;
+}
+
+.user-spots-link-2 {
+    margin-top: -10px;
+    margin-bottom: -10px;
 }
 
 #user-p {
@@ -57,10 +72,11 @@
 }
 
 .user-logout-button {
-    border: 1px solid rgb(228, 228, 228);
-    box-shadow: 0px 0px 1px 2px rgb(172, 172, 172);
+    border: 1px solid rgb(209, 209, 209);
+    box-shadow: 1px 1px 1px 1px rgb(209, 209, 209);
     cursor: pointer;
     margin-bottom: 10px;
+    width: 120px;
 }
 
 .topbar-home {

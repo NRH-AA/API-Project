@@ -131,7 +131,7 @@ const CreateSpot = () => {
             <h3>Where's your place located?</h3>
             <p id="where-p">Guests will only get your exact address once they booked a reservation.</p>
             
-            <button onClick={createDemoSpot}>Demo Create</button>
+            <button className="create-spot-button" onClick={createDemoSpot}>Demo Create</button>
             
             <div>
                 <ul>
@@ -239,7 +239,8 @@ const CreateSpot = () => {
                 </div>
                 
                 <div id="create-spot-button-div">
-                    <button id="create-spot-button" type="submit">Create</button>
+                    <button className="create-spot-button" type="submit">Create</button>
+                    <button className="create-spot-button" onClick={() => history.goBack()}>Back</button>
                 </div>
                 
             </form>
