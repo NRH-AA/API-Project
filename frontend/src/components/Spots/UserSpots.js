@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getUserSpots, getUserSpotsState } from '../../store/spots';
+import OpenModalButton from "../OpenModalButton";
+import DeleteSpotModal from "../DeleteSpotModal";
+import UpdateSpotModal from "../UpdateSpotModal";
 import './Spots.css';
 
 const UserSpotsComponent = () => {
@@ -34,13 +37,19 @@ const UserSpotsComponent = () => {
                         {" " + "night"}
                         </p>
                         
-                        <Link className="allSpots-update-button allSpots-button"
-                            to={`/spots/${spot.id}/update`}
-                        >Update</Link>
+                        <OpenModalButton
+                            spotId={spot.id}
+                            className="allSpots-button allSpots-update-button"
+                            buttonText="Update"
+                            modalComponent={<UpdateSpotModal />}
+                        />
                         
-                        <Link className="allSpots-button"
-                            to={`/spots/${spot.id}/delete`}
-                        >Delete</Link>
+                        <OpenModalButton
+                            spotId={spot.id}
+                            className="allSpots-button"
+                            buttonText="Delete"
+                            modalComponent={<DeleteSpotModal />}
+                        />
                     </div>
             </div>
             )}

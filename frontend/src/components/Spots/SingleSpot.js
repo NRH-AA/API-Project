@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getSpotsState, getSpot } from "../../store/spots";
+import ReviewsComponent from "../Reviews";
 import './Spots.css';
 
 const SingleSpot = () => {
@@ -47,12 +48,14 @@ const SingleSpot = () => {
     }
     
     return (
-        <>
-          <div className="singleSpot-wrapper">
+        <div id="singleSpot-wrapper">
+          <div id="singleSpot-inner-div">
+            
             <div>
-                <h2>{spot ? spot.name : ''}</h2>
-                {getSpotLocation()}
+              <h2 className="singleSpot-h2">{spot ? spot.name : ''}</h2>
+              {getSpotLocation()}
             </div>
+            
             
             <div className="spot-images-div">
               <div className="previewImg-div">
@@ -60,23 +63,32 @@ const SingleSpot = () => {
               </div>
               
               <div className="images-div">
-                {spotImages?.map(img => <img className="images" key={img.url} src={img.url}></img>)}
+                {spotImages?.map(img => {
+                  if (!img.preview) return <img className="images" key={img.id} src={img.url}></img>
+                })}
               </div>
             </div>
             
             <div className="spot-desc-div">
-              <div className="spot-desc">
+              <div>
                 {getSpotOwner()}
                 {getSpotDescription()}
               </div>
               
               <div className="spot-reserve">
-                <p>{spot ? "$" + spot.price + ' night' : ''}</p>
+                <div id="spot-reserve-div">
+                  <p><span id="spot-reserve-span">{spot ? "$" + spot.price : ''}</span> {spot ? ' night' : ''}</p>
+                  <button id="spot-reserve-button" onClick={() => alert('Feature not implimented.')}>Reserve</button>
+                </div>
               </div>
             </div>
             
+            <div>
+              <ReviewsComponent spotId={spotId} />
+            </div>
+            
           </div>
-        </>
+        </div>
     );
 };
 

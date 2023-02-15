@@ -4,6 +4,8 @@ const SET_ALL_SPOTS = 'spots/SET';
 const SET_SPOT = 'spot/SET';
 const SET_USER_SPOTS = 'spots/SET_USER';
 const CREATE_SPOT = 'spot/CREATE';
+const UPDATE_SPOT = 'spot/UPDATE';
+const DELETE_SPOT = 'spot/DELETE';
 
 const setAllSpots = (spots) => ({
     type: SET_ALL_SPOTS,
@@ -25,8 +27,10 @@ const setUserSpots = (spots) => ({
     spots
 });
 
-
-
+const deleteUserSpot = (spotId) => ({
+    type: DELETE_SPOT,
+    spotId
+});
 
 
 
@@ -74,12 +78,48 @@ export const createSpot = (data, images) => async dispatch => {
         images.forEach(async image => {
             await csrfFetch(`/api/spots/${spotData.id}/images`, {
                 method: 'POST',
-                body: JSON.stringify({url: image.url, preview: image.preview, spotId: spotData.id})
+                body: JSON.stringify({url: image.url, preview: image.preview})
             });
         });
     };
     
     return res;
+};
+
+export const updateSpot = (data, images) => async dispatch => {
+    const res = await csrfFetch(`/api/spots/${data.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+    });
+    
+    if (res.ok) {
+        images.forEach(async image => {
+            await csrfFetch(`/api/spots/${data.id}/images`, {
+                method: 'POST',
+                body: JSON.stringify({url: image.url, preview: image.preview})
+            });
+        });
+        
+        const getSpot = await csrfFetch(`/api/spots/${data.id}`);
+        const spotData = await getSpot.json();
+        dispatch(getSpot(spotData));
+        return getSpot;
+    };
+    
+    return res;
+};
+
+export const deleteSpot = (spotId) => async dispatch => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'DELETE'
+    });
+    
+    if (res.ok) {
+        dispatch(deleteUserSpot(spotId));
+        return true;
+    }
+    
+    return false;
 };
 
 
@@ -89,6 +129,7 @@ export const createSpot = (data, images) => async dispatch => {
 
 export const getSpotsState = (state) => state.spots;
 export const getAllSpotsState = (state) => state.spots.allSpots;
+export const getSingleSpotState = (state) => state.spots.singleSpot;
 export const getSpotRedirect = (state) => state.spots.redirect;
 export const getUserSpotsState = (state) => state.spots.userSpots;
 
@@ -105,7 +146,13 @@ const spotsReducer = (state = initialState, action) => {
             return {...state, singleSpot: null, redirect: action.spot.id};
             
         case SET_USER_SPOTS:
-            return {...state, userSpots: [...action.spots.Spots]};
+            return {...state, allSpots: null, userSpots: [...action.spots.Spots]};
+            
+        case UPDATE_SPOT:
+            return {};
+            
+        case DELETE_SPOT:
+            return {...state, userSpots: null};
             
         default:
             return state;
