@@ -10,6 +10,7 @@ const UpdateSpotModal = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const spotState = useSelector(spotActions.getUserSpotsState);
+    const spotStateSingle = useSelector(spotActions.getSingleSpotState);
     const { closeModal, modalSpot } = useModal();
     
     let spot;
@@ -21,6 +22,11 @@ const UpdateSpotModal = () => {
         };
     };
     
+    
+    if (!spot) spot = spotStateSingle;
+    
+    console.log(spot);
+    
     const [country, setCountry] = useState(spot.country ? spot.country : '');
     const [address, setAddress] = useState(spot.address ? spot.address : '');
     const [city, setCity] = useState(spot.city ? spot.city : '');
@@ -28,7 +34,7 @@ const UpdateSpotModal = () => {
     const [description, setDescription] = useState(spot.description ? spot.description : '');
     const [name, setName] = useState(spot.name ? spot.name : '');
     const [price, setPrice] = useState(spot.price ? spot.price : '');
-    const [image1, setImage1] = useState(spot.previewImage ? spot.previewImage : '');
+    const [image1, setImage1] = useState('');
     const [image2, setImage2] = useState('');
     const [image3, setImage3] = useState('');
     const [image4, setImage4] = useState('');

@@ -2,12 +2,17 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getSpotsState, getSpot } from "../../store/spots";
+import { getUserState } from "../../store/session";
 import ReviewsComponent from "../Reviews";
+import OpenModalButton from "../OpenModalButton";
+import DeleteSpotModal from "../DeleteSpotModal";
+import UpdateSpotModal from "../UpdateSpotModal";
 import './Spots.css';
 
 const SingleSpot = () => {
     const { spotId } = useParams();
     const spotsState = useSelector(getSpotsState);
+    const userState = useSelector(getUserState);
     
     const spot = spotsState.singleSpot ? spotsState.singleSpot : null;
     const spotImages = spot ? [...spotsState.singleSpot.SpotImages] : null;
@@ -40,20 +45,46 @@ const SingleSpot = () => {
     function getPreviewImage() {
       if (spotImages) {
         for (let img of spotImages) {
-          if (img.preview) {
-            return img.url
-          }
+          if (img.preview) return img.url
         }
       }
     }
+    
+    const displayEditButtons = () => {
+      if (spot && userState && userState.id === spot.ownerId) {
+        return (
+          <>
+            <OpenModalButton
+                spotId={spot.id}
+                className="allSpots-button singleSpots-edit-buttons"
+                buttonText="Update"
+                modalComponent={<UpdateSpotModal />}
+            />
+                          
+            <OpenModalButton
+                spotId={spot.id}
+                className="allSpots-button singleSpots-edit-buttons"
+                buttonText="Delete"
+                modalComponent={<DeleteSpotModal />}
+            />
+          </>
+        );
+      };
+    };
+    
     
     return (
         <div id="singleSpot-wrapper">
           <div id="singleSpot-inner-div">
             
-            <div>
-              <h2 className="singleSpot-h2">{spot ? spot.name : ''}</h2>
-              {getSpotLocation()}
+            <div id="singleSpot-title-div">
+              <div>
+                <h2 className="singleSpot-h2">{spot ? spot.name : ''}</h2>
+                {getSpotLocation()}
+              </div>
+              
+              {displayEditButtons()}
+              
             </div>
             
             

@@ -20,11 +20,22 @@ const ReviewsComponent = ({ spotId }) => {
     
     const formatDate = (date) => date.slice(0, 9).split('-').reverse().join('-');
     
+    const getStarReviewsText = () => {
+        if (!spotData) return ('');
+        if (spotData.numReviews === 1) return `${spotData?.avgStarRating + ' *'}  ${spotData?.numReviews} Review`;
+        if (spotData.numReviews === 0) return ` New`;
+        return `${spotData?.avgStarRating + ' *'}  ${spotData?.numReviews} Reviews`
+    }
+    
     return (
         <div id="reviews-wrapper">
-            <h3>⭐ {spotData?.avgStarRating} * 
-            {spotData?.numReviews === 1 ? ` ${spotData?.numReviews} Review` : 
-            `${spotData?.numReviews} Reviews`}
+            <h3>⭐
+            {getStarReviewsText()}
+            <div><button>Post your review</button></div>
+            {spotData?.numReviews === 0 ? 
+            <p>Be the first to post a review</p>
+            : ''}
+            
             </h3>
             
             {reviewData?.map(el => {
