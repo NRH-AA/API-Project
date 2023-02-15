@@ -96,6 +96,31 @@ const CreateSpot = () => {
         });
     };
     
+    const createDemoSpot = (e) => {
+        e.preventDefault();
+        
+        const spotData = {
+            address: new Date(),
+            city: 'DemoCity',
+            state: 'DemoState',
+            country: 'DemoCountry',
+            name: 'DemoTitle',
+            description: 'Some random description',
+            price: '100',
+            lat,
+            lng
+        };
+        
+        const imageData = [];
+        imageData.push({url: 'https://static.planetminecraft.com/files/resource_media/screenshot/1408/family_guy_griffin_house.jpg', preview: true})
+        
+        return dispatch(spotActions.createSpot(spotData, imageData))
+        .catch(async (res) => {
+            const data = await res.json();
+            if (data && data.errors) setErrors(data.errors);
+        });
+    }
+    
     if (redirect) {
         return history.push(`/spots/${redirect}`);
     }
@@ -105,6 +130,8 @@ const CreateSpot = () => {
             <h2>Create a new Spot</h2>
             <h3>Where's your place located?</h3>
             <p id="where-p">Guests will only get your exact address once they booked a reservation.</p>
+            
+            <button onClick={createDemoSpot}>Demo Create</button>
             
             <div>
                 <ul>

@@ -77,6 +77,21 @@
     margin: auto;
 }
 
+
+#singleSpot-title-div {
+    display: flex;
+    align-items: center;
+}
+
+.singleSpots-edit-buttons {
+    margin-top: 70px;
+    margin-left: 39px;
+}
+
+#singleSpot-edit-buttons-div {
+    width: 300px;
+}
+
 .singleSpot-h2 {
     margin-bottom: -5px;
 }
@@ -118,7 +133,7 @@
 
 .spot-reserve {
     border: 2px solid black;
-    height: 100px;
+    height: 110px;
     min-width: 320px;
     max-width: 320px;
     border-radius: 10px;
