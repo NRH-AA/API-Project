@@ -99,11 +99,8 @@ export const updateSpot = (data, images) => async dispatch => {
                 body: JSON.stringify({url: image.url, preview: image.preview})
             });
         });
-        
-        const getSpot = await csrfFetch(`/api/spots/${data.id}`);
-        const spotData = await getSpot.json();
-        dispatch(getSpot(spotData));
-        return getSpot;
+
+        dispatch(getSpot(data.id));
     };
     
     return res;

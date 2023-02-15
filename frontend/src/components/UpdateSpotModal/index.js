@@ -25,8 +25,6 @@ const UpdateSpotModal = () => {
     
     if (!spot) spot = spotStateSingle;
     
-    console.log(spot);
-    
     const [country, setCountry] = useState(spot.country ? spot.country : '');
     const [address, setAddress] = useState(spot.address ? spot.address : '');
     const [city, setCity] = useState(spot.city ? spot.city : '');
