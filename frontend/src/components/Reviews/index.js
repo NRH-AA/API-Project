@@ -29,11 +29,16 @@ const ReviewsComponent = ({ spotId }) => {
             
             {reviewData?.map(el => {
             return (
-                <div className="reviews-div">
-                    <p className="reviews-name-p">{el.User?.firstName + ' ' + el.User?.lastName}</p>
-                    <p className="reviews-date-p">{formatDate(el.updatedAt)}</p>
+                <div>
+                    <p className="reviews-name-p">
+                        {el.User?.firstName + ' ' + el.User?.lastName}
+                    </p>
+                    <p className="reviews-date-p">
+                        {formatDate(el.updatedAt)}
+                    </p>
                 
                     <p className="reviews-review-p" key={el.id}>{el.review}</p>
+                    
                     {el?.userId === userData?.id ?
                     <div className="reviews-button-div">
                         <button className="reviews-button">Update</button>
