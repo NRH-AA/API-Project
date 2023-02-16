@@ -5,6 +5,8 @@
     padding: 5px;
     background-color: white;
     border: 1px solid rgb(204, 204, 204);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
 }
 
 .logoImg {
@@ -40,7 +42,11 @@
     
     background-color: white;
     border-radius: 20px;
-    box-shadow: 0px 0px 1px 2px rgb(177, 177, 177);
+    border: 2px solid rgb(0, 0, 0);
+    background: linear-gradient(#bebebe, #e6e6e6);
+    box-shadow: 0px 0px 1px 2px rgb(29, 29, 29);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
 }
 
 #user-profile-link-div {
@@ -56,15 +62,12 @@
 .user-spots-link {
     text-decoration: none;
     color: black;
+    margin-top: 10px;
+    margin-bottom: -8px;
 }
 
-.user-spots-link-1 {
-    margin-top: 5px;
-}
-
-.user-spots-link-2 {
-    margin-top: -10px;
-    margin-bottom: -10px;
+.user-spots-link:hover {
+    text-decoration: underline;
 }
 
 #user-p {
@@ -72,11 +75,21 @@
 }
 
 .user-logout-button {
-    border: 1px solid rgb(209, 209, 209);
-    box-shadow: 1px 1px 1px 1px rgb(209, 209, 209);
-    cursor: pointer;
     margin-bottom: 10px;
     width: 120px;
+    cursor: pointer;
+    background: radial-gradient(#fcfcfc, #58a8ca);
+    box-shadow: 0px 0px 1px 1px rgb(97, 97, 97);
+    border-radius: 20px;
+}
+
+.user-logout-button:hover {
+    background: radial-gradient(#fcfcfc, #91cce5);
+}
+
+.user-logout-button:active {
+    background: radial-gradient(#fcfcfc, #2a7b9e);
+    box-shadow: 0px 0px 1px 1px rgb(143, 143, 143);
 }
 
 .topbar-home {
@@ -105,7 +118,7 @@
 }
 
 .profile-menu-div {
-    border: 1px solid #dddddd;
+    border: 1px solid #a5a5a5;
     border-radius: 20px;
     width: 75px;
     height: 38px;
@@ -115,7 +128,7 @@
 }
 
 .profile-menu-div:hover {
-    box-shadow: 0px 1px 1px 1px rgb(241, 241, 241);
+    box-shadow: 0px 0px 1px 1px rgb(212, 212, 212);
 }
 
 .profile-menu-img {
@@ -130,4 +143,8 @@
 .create-spot {
     text-decoration: none;
     color: rgb(0, 137, 161);
+}
+
+.create-spot:hover {
+    text-decoration: underline;
 }

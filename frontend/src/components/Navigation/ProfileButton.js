@@ -57,12 +57,9 @@ function ProfileButton({ user }) {
             <p>{`Hello, ${user.firstName}  ${user.lastName}`}</p>
             <p id="user-p">{user.email}</p>
             <div id="user-profile-link-div">
-              <Link className="user-spots-link user-spots-link-1" to="/spots/current"
+              <Link className="user-spots-link" to="/spots/current"
                 onClick={() => setShowMenu(false)}
                 >Manage Spots</Link><br></br>
-              <Link className="user-spots-link user-spots-link-2" to="/reviews/current"
-                onClick={() => setShowMenu(false)}
-                >Manage Reviews</Link><br></br>
             </div>
             <button className="user-logout-button" onClick={logout}>Log Out</button>
           </>

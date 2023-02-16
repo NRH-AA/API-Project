@@ -23,10 +23,9 @@ const UserSpotsComponent = () => {
     return (
         <div id="allSpots-wrapper">
             {spots?.map(spot => 
-            <div key={spot.id} className="spot-div">
-                    <Link to={"/spots/" + spot.id}>
+                <Link key={spot.id} className="spotLink" to={"/spots/" + spot.id}>
                     <img className="allSpots-img" src={spot.previewImage} alt={spot.name}></img>
-                    </Link>
+                    
                     <div className="allSpots-info-div">
                         <p>{spot.city + ", " + spot.state}</p>
                         <p>{'⭐' + spot.avgRating}</p>
@@ -43,7 +42,7 @@ const UserSpotsComponent = () => {
                             buttonText="Update"
                             modalComponent={<UpdateSpotModal />}
                         />
-                        
+                            
                         <OpenModalButton
                             spotId={spot.id}
                             className="allSpots-button"
@@ -51,7 +50,7 @@ const UserSpotsComponent = () => {
                             modalComponent={<DeleteSpotModal />}
                         />
                     </div>
-            </div>
+            </Link>
             )}
         </div>
     );
