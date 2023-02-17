@@ -21,6 +21,9 @@ const UserSpotsComponent = () => {
     }, [dispatch])
     
     return (
+        <>
+        <h2 style={{marginLeft: 20}}>Manage Spots</h2>
+        <p style={{marginLeft: 20, fontSize: 18}}>{spots?.length === 0 ? 'You have no spots yet' : ''}</p>
         <div id="allSpots-wrapper">
             {spots?.map(spot => 
                 <Link key={spot.id} className="spotLink" to={"/spots/" + spot.id}>
@@ -53,6 +56,7 @@ const UserSpotsComponent = () => {
             </Link>
             )}
         </div>
+        </>
     );
 };
 

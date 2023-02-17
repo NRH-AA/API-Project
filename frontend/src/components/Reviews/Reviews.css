@@ -139,6 +139,12 @@
     box-shadow: 1px 1px 2px 2px rgb(207, 207, 207);
 }
 
+.create-review-button-2:disabled {
+    background: linear-gradient(#a7a7a7, #d3d3d3);
+    border: 1px solid rgb(212, 212, 212);
+    box-shadow: 1px 1px 2px 2px rgb(226, 226, 226);
+}
+
 .create-review-button-2:active {
     background: linear-gradient(#a7a7a7, #d3d3d3);
     border: 1px solid rgb(212, 212, 212);

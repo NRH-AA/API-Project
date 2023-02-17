@@ -156,6 +156,7 @@ const UpdateReviewModal = ({ spotId }) => {
                 <div id="create-review-buttons-div">   
                     <button className="create-review-button-2"
                         type="submit"
+                        disabled={review.length < 10 ? true : false}
                     >Update Your Review</button>
                     <button className="create-review-button-2"
                         type="button"

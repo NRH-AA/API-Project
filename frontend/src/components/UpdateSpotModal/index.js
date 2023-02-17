@@ -164,37 +164,9 @@ const UpdateSpotModal = () => {
                     <span className="error-msg">{formErrors.price ? formErrors.price : ''}</span>
                 </div>
                 
-                {/* <div id="images-div">
-                    <input className="imageUrl-input" type="text" placeholder='Preview Image URL' value={image1}
-                        onChange={(e) => setImage1(e.target.value)}
-                    ></input>
-                    <span className="error-msg">{formErrors.image1 ? formErrors.image1 : ''}</span>
-                    
-                    <input className="imageUrl-input" type="text" placeholder='Image URL' value={image2}
-                        onChange={(e) => setImage2(e.target.value)}
-                    ></input>
-                    <span className="error-msg">{formErrors.image2 ? formErrors.image2 : ''}</span>
-                    
-                    <input className="imageUrl-input" type="text" placeholder='Image URL' value={image3}
-                        onChange={(e) => setImage3(e.target.value)}
-                    ></input>
-                    <span className="error-msg">{formErrors.image3 ? formErrors.image3 : ''}</span>
-                    
-                    <input className="imageUrl-input" type="text" placeholder='Image URL' value={image4}
-                        onChange={(e) => setImage4(e.target.value)}
-                    ></input>
-                    <span className="error-msg">{formErrors.image4 ? formErrors.image4 : ''}</span>
-                    
-                    <input className="imageUrl-input" type="text" placeholder='Image URL' value={image5}
-                        onChange={(e) => setImage5(e.target.value)}
-                    ></input>
-                    <span className="error-msg">{formErrors.image5 ? formErrors.image5 : ''}</span>
-                    
-                </div> */}
-                
                 <div id="update-spot-button-div">
                     <button className="update-spot-button" type="submit">Update</button>
-                    <button className="update-spot-button" onClick={closeModal}>Cancel</button>
+                    <button type="button" className="update-spot-button" onClick={closeModal}>Cancel</button>
                 </div>
                 
             </form>

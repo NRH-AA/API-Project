@@ -27,9 +27,9 @@ const ReviewsComponent = ({ spotId }) => {
     
     const getStarReviewsText = () => {
         if (!spotData) return ('');
-        if (spotData.numReviews === 1) return `${spotData?.avgStarRating + ' *'}  ${spotData?.numReviews} Review`;
+        if (spotData.numReviews === 1) return `${spotData?.avgStarRating + ' ·'}  ${spotData?.numReviews} Review`;
         if (spotData.numReviews === 0) return ` New`;
-        return `${spotData?.avgStarRating + ' *'}  ${spotData?.numReviews} Reviews`
+        return `${spotData?.avgStarRating + ' ·'}  ${spotData?.numReviews} Reviews`
     }
     
     function getStars(num) {
