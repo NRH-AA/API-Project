@@ -30,8 +30,8 @@ function SignupFormModal() {
   };
   
   const buttonDisabled = () => email.length === 0 ||
-  username.length === 0 || firstName.length === 0 || lastName.length === 0 ||
-  password.length === 0 || confirmPassword.length === 0;
+  username.length < 4 || firstName.length === 0 || lastName.length === 0 ||
+  password.length < 6 || confirmPassword.length < 6 || password !== confirmPassword;
 
   return (
     <>
