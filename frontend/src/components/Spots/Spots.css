@@ -125,9 +125,18 @@
     align-items: center;
 }
 
-.singleSpots-edit-buttons {
-    margin-top: 70px;
-    margin-left: 30px;
+#singleSpot-edit-buttons-div {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.singleSpots-delete-button {
+    margin-right: 15px;
+}
+.singleSpots-edit-button {
+    width: 120px;
+    height: 20px;
 }
 
 .singleSpot-h2 {
