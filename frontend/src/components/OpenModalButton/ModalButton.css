@@ -3,17 +3,22 @@
     height: 25px;
     margin-top: 10px;
     margin-bottom: 10px;
+    background: linear-gradient(#b3b3b3, #f5f5f5);
+    border: 1px solid rgb(167, 167, 167);
+    box-shadow: 1px 1px 2px 2px rgb(131, 131, 131);
+    border-radius: 3px;
     cursor: pointer;
-    background: radial-gradient(#fcfcfc, #58a8ca);
-    box-shadow: 0px 0px 1px 1px rgb(97, 97, 97);
-    border-radius: 20px;
+    font-weight: 700;
 }
 
 .signup-button:hover {
-    background: radial-gradient(#fcfcfc, #91cce5);
+    background: linear-gradient(#c9c9c9, #ffffff);
+    border: 1px solid rgb(212, 212, 212);
+    box-shadow: 1px 1px 2px 2px rgb(131, 131, 131);
 }
 
 .signup-button:active {
-    background: radial-gradient(#fcfcfc, #2a7b9e);
-    box-shadow: 0px 0px 1px 1px rgb(143, 143, 143);
+    background: linear-gradient(#a7a7a7, #d3d3d3);
+    border: 1px solid rgb(189, 189, 189);
+    box-shadow: 1px 1px 2px 2px rgb(211, 211, 211);
 }

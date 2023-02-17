@@ -82,8 +82,6 @@ const UpdateReviewModal = ({ spotId }) => {
             <h2>Update Review</h2>
             
             <form onSubmit={handleSubmit}>
-                <h2>How was your stay?</h2>
-                
                 <ul>
                     {errors?.map(el => <li key={el} className="error-li">{el}</li>)}
                 </ul>

@@ -27,12 +27,12 @@ const UserSpotsComponent = () => {
                     <img className="allSpots-img" src={spot.previewImage} alt={spot.name}></img>
                     
                     <div className="allSpots-info-div">
-                        <p>{spot.city + ", " + spot.state}</p>
-                        <p>{'⭐' + spot.avgRating}</p>
+                        <p className="allSpots-p">{spot.city + ", " + spot.state}</p>
+                        <p className="allSpots-p-2">{'⭐' + spot.avgRating}</p>
                     </div>
                     
                     <div className="allSpots-price-div">   
-                        <p><b>{"$" + spot.price}</b> 
+                        <p className="allSpots-p"><b>{"$" + spot.price}</b> 
                         {" " + "night"}
                         </p>
                         

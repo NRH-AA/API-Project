@@ -25,6 +25,8 @@ const UpdateSpotModal = () => {
     
     if (!spot) spot = spotStateSingle;
     
+    console.log(spot);
+    
     const [country, setCountry] = useState(spot.country ? spot.country : '');
     const [address, setAddress] = useState(spot.address ? spot.address : '');
     const [city, setCity] = useState(spot.city ? spot.city : '');
@@ -32,11 +34,6 @@ const UpdateSpotModal = () => {
     const [description, setDescription] = useState(spot.description ? spot.description : '');
     const [name, setName] = useState(spot.name ? spot.name : '');
     const [price, setPrice] = useState(spot.price ? spot.price : '');
-    const [image1, setImage1] = useState('');
-    const [image2, setImage2] = useState('');
-    const [image3, setImage3] = useState('');
-    const [image4, setImage4] = useState('');
-    const [image5, setImage5] = useState('');
     const [errors, setErrors] = useState([]);
     const [formErrors, setFormErrors] = useState({});
     
@@ -103,30 +100,30 @@ const UpdateSpotModal = () => {
             
             <form onSubmit={handleSubmit}>
                 <div id="create-spot-top">
-                    <div className="create-spot-input">
+                    <div className="create-spot-input-div">
                         <label>Country <span className="error-msg">{formErrors.country ? formErrors.country : ''}</span></label>
-                        <input type="text" placeholder='Country' value={country}
+                        <input className="create-spot-input" type="text" placeholder='Country' value={country}
                             onChange={(e) => setCountry(e.target.value)}
                         ></input>
                     </div>
                     
-                    <div className="create-spot-input">
+                    <div className="create-spot-input-div">
                         <label>Street Address <span className="error-msg">{formErrors.address ? formErrors.address : ''}</span></label>
-                        <input type="text" placeholder='Address' value={address}
+                        <input className="create-spot-input" type="text" placeholder='Address' value={address}
                             onChange={(e) => setAddress(e.target.value)}
                         ></input>
                     </div>
                     
                     <div id="city-state-div">
-                        <div id="create-spot-input-city">
+                        <div id="create-spot-input-city-div">
                             <label>City <span className="error-msg">{formErrors.city ? formErrors.city : ''}</span></label>
-                            <input type="text" placeholder='City' value={city}
+                            <input className="create-spot-input" type="text" placeholder='City' value={city}
                                 onChange={(e) => setCity(e.target.value)}
                             ></input>
                         </div>
-                        <div id="create-spot-input-state">
+                        <div id="create-spot-input-state-div">
                             <label>State <span className="error-msg">{formErrors.state ? formErrors.state : ''}</span></label>
-                            <input type="text" placeholder='State' value={state}
+                            <input className="create-spot-input" type="text" placeholder='State' value={state}
                                 onChange={(e) => setState(e.target.value)}
                             ></input>
                         </div>
@@ -150,7 +147,7 @@ const UpdateSpotModal = () => {
                     <h3>Title</h3>
                     
                     <div>
-                        <input className="create-spot-input2" type='text' value={name}
+                        <input className="create-spot-input create-spot-input2" type='text' value={name}
                             placeholder='Name of your spot'
                             onChange={(e) => setName(e.target.value)}
                         ></input>
@@ -160,7 +157,7 @@ const UpdateSpotModal = () => {
                 
                 <div id="price-div">
                     <h3 id="price-h3">Price per night</h3>
-                    <span>$ </span><input id="price-input" type="text" value={price}
+                    <span>$ </span><input className="create-spot-input" id="price-input" type="text" value={price}
                         placeholder='price'
                         onChange={(e) => setPrice(e.target.value)}
                         ></input>
