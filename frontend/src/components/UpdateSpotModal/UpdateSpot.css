@@ -11,7 +11,22 @@
 .update-spot-button {
     width: 120px;
     height: 25px;
-    border: 1px solid rgb(209, 209, 209);
-    box-shadow: 1px 1px 1px 1px rgb(209, 209, 209);
+    background: linear-gradient(#b3b3b3, #f5f5f5);
+    border: 1px solid rgb(180, 180, 180);
+    box-shadow: 1px 1px 2px 2px rgb(160, 160, 160);
+    border-radius: 3px;
     cursor: pointer;
+    font-weight: 700;
+}
+
+.update-spot-button:hover {
+    background: linear-gradient(#c9c9c9, #ffffff);
+    border: 1px solid rgb(212, 212, 212);
+    box-shadow: 1px 1px 2px 2px rgb(207, 207, 207);
+}
+
+.update-spot-button:active {
+    background: linear-gradient(#a7a7a7, #d3d3d3);
+    border: 1px solid rgb(212, 212, 212);
+    box-shadow: 1px 1px 2px 2px rgb(226, 226, 226);
 }

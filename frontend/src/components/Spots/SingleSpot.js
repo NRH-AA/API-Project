@@ -26,13 +26,13 @@ const SingleSpot = () => {
     
     function getSpotLocation() {
       return (
-        <p>{spot ? spot.city + ", " + spot.state + ", " + spot.country : ''}</p>
+        <p>{spot ? spot.city.toUpperCase() + ", " + spot.state.toUpperCase() + ", " + spot.country.toUpperCase() : ''}</p>
       );
     };
     
     function getSpotOwner() {
       return (
-        <h2>{spotOwner ? 'Hosted by ' + spotOwner.firstName + ' ' + spotOwner.lastName : ''}</h2>
+        <h2 id="singleSpot-owner-h2">{spotOwner ? 'Hosted by ' + spotOwner.firstName + ' ' + spotOwner.lastName : ''}</h2>
       );
     };
     
@@ -86,7 +86,7 @@ const SingleSpot = () => {
             
             <div id="singleSpot-title-div">
               <div>
-                <h2 className="singleSpot-h2">{spot ? spot.name : ''}</h2>
+                <h2 className="singleSpot-h2">{spot ? spot.name.toUpperCase() : ''}</h2>
                 {getSpotLocation()}
               </div>
               
