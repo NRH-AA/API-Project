@@ -241,7 +241,7 @@ const CreateSpot = () => {
                 
                 <div id="create-spot-button-div">
                     <button className="create-spot-button" type="submit">Create</button>
-                    <button className="create-spot-button" onClick={() => history.goBack()}>Back</button>
+                    <button className="create-spot-button" type="button" onClick={() => history.goBack()}>Back</button>
                 </div>
                 
             </form>

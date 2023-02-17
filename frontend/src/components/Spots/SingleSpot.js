@@ -52,9 +52,9 @@ const SingleSpot = () => {
     
     const getStarReviewsText = () => {
       if (!spot) return ('');
-      if (spot.numReviews === 1) return `${spot?.avgStarRating + ' *'}  ${spot?.numReviews} Review`;
+      if (spot.numReviews === 1) return `${spot?.avgStarRating + ' ·'}  ${spot?.numReviews} Review`;
       if (spot.numReviews === 0) return ` New`;
-      return `${spot?.avgStarRating + ' *'}  ${spot?.numReviews} Reviews`
+      return `${spot?.avgStarRating + ' ·'}  ${spot?.numReviews} Reviews`
   }
     
     const displayEditButtons = () => {
