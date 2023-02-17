@@ -63,14 +63,14 @@ const SingleSpot = () => {
           <>
             <OpenModalButton
                 spotId={spot.id}
-                className="allSpots-button singleSpots-edit-buttons"
+                className="allSpots-button singleSpots-edit-button"
                 buttonText="Update"
                 modalComponent={<UpdateSpotModal />}
             />
                           
             <OpenModalButton
                 spotId={spot.id}
-                className="allSpots-button singleSpots-edit-buttons"
+                className="allSpots-button singleSpots-delete-button singleSpots-edit-button"
                 buttonText="Delete"
                 modalComponent={<DeleteSpotModal />}
             />
@@ -90,8 +90,6 @@ const SingleSpot = () => {
                 {getSpotLocation()}
               </div>
               
-              {displayEditButtons()}
-              
             </div>
             
             
@@ -105,6 +103,11 @@ const SingleSpot = () => {
                   if (!img.preview) return <img className="images" key={img.id} src={img.url}></img>
                 })}
               </div>
+            </div>
+            
+            
+            <div id="singleSpot-edit-buttons-div">
+                {displayEditButtons()}
             </div>
             
             <div className="spot-desc-div">
