@@ -31,8 +31,8 @@ function LoginFormModal() {
     return closeModal();
   }
   
-  const buttonDisabled = () => credential.length === 0 ||
-                               password.length === 0;
+  const buttonDisabled = () => credential.length < 4 ||
+                               password.length <= 6;
                         
   return (
     <>
