@@ -116,17 +116,19 @@ const SingleSpot = () => {
                 {getSpotDescription()}
               </div>
               
-              <div className="spot-reserve">
-                <div id="spot-reserve-div">
-                  
-                  <div id="spot-reserve-text">
-                    <p><span id="spot-reserve-span">{spot ? "$" + spot.price : ''}</span> {spot ? ' night' : ''}</p>
-                    <b>⭐{getStarReviewsText()}</b>
+              {spot?.ownerId !== userState?.id ?
+                <div className="spot-reserve">
+                  <div id="spot-reserve-div">
+                    
+                    <div id="spot-reserve-text">
+                      <p><span id="spot-reserve-span">{spot ? "$" + spot.price : ''}</span> {spot ? ' night' : ''}</p>
+                      <b>⭐{getStarReviewsText()}</b>
+                    </div>
+                    
+                    <button id="spot-reserve-button" onClick={() => alert('Feature not implimented.')}>Reserve</button>
                   </div>
-                  
-                  <button id="spot-reserve-button" onClick={() => alert('Feature not implimented.')}>Reserve</button>
                 </div>
-              </div>
+              : ''}
             </div>
             
             <div>
