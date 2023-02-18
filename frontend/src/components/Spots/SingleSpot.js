@@ -79,7 +79,6 @@ const SingleSpot = () => {
       };
     };
     
-    
     return (
         <div id="singleSpot-wrapper">
           <div id="singleSpot-inner-div">
@@ -95,12 +94,14 @@ const SingleSpot = () => {
             
             <div className="spot-images-div">
               <div className="previewImg-div">
-                <img className="previewImg" src={getPreviewImage()}></img>
+                  <a href={getPreviewImage()}>
+                    <img className="previewImg" src={getPreviewImage()} />
+                  </a>
               </div>
               
               <div className="images-div">
                 {spotImages?.map(img => {
-                  if (!img.preview) return <img className="images" key={img.id} src={img.url}></img>
+                  if (!img.preview) return <a className="images-a" href={img.url}><img className="images" key={img.id} src={img.url}></img></a>
                 })}
               </div>
             </div>
