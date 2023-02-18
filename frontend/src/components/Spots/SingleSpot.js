@@ -94,14 +94,14 @@ const SingleSpot = () => {
             
             <div className="spot-images-div">
               <div className="previewImg-div">
-                  <a href={getPreviewImage()}>
+                  <a href={getPreviewImage()} target="_blank">
                     <img className="previewImg" src={getPreviewImage()} />
                   </a>
               </div>
               
               <div className="images-div">
                 {spotImages?.map(img => {
-                  if (!img.preview) return <a className="images-a" href={img.url}><img className="images" key={img.id} src={img.url}></img></a>
+                  if (!img.preview) return <a className="images-a" href={img.url} target="_blank"><img className="images" key={img.id} src={img.url}></img></a>
                 })}
               </div>
             </div>
