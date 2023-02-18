@@ -33,12 +33,19 @@ const CreateSpot = () => {
         const err = {};
         
         if (!country) err.country = "Country is required";
+        if (country.length < 5 || country.length > 20) err.country = "Country length must be 5-20 characters";
         if (!address) err.address = "Address is required";
+        if (address.length < 5 || address.length > 20) err.address = "Address length must be 5-20 characters";
         if (!city) err.city = "City is required"
+        if (city.length < 5 || city.length > 15) err.city = "City length must be 5-15 characters";
         if (!state) err.state = "State is required";
+        if (state.length < 5 || state.length > 15) err.state = "State length must be 5-15 characters";
         if (description.length < 30) err.desc = "Description needs a minimum of 30 characters";
+        if (description.length > 250) err.desc = "Description needs a maximum of 250 characters";
         if (!name) err.name = "Name is required";
+        if (name.length < 5 || name.length > 20) err.name = "Title length must be 5-20 characters";
         if (!price) err.price = "Price is required";
+        if (price === 0) err.price = "Price cannot be zero" 
         if (!image1) err.image1 = "Preview image is required";
         if (image1 && !image1.endsWith('.png') && !image1.endsWith('.jpg') && !image1.endsWith('.jpeg')) {
             err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
@@ -100,7 +107,7 @@ const CreateSpot = () => {
         e.preventDefault();
         
         const spotData = {
-            address: 'DemoAddress: ' + new Date(),
+            address: new Date(),
             city: 'DemoCity',
             state: 'DemoState',
             country: 'DemoCountry',
@@ -123,7 +130,7 @@ const CreateSpot = () => {
     
     if (redirect) {
         return history.push(`/spots/${redirect}`);
-    }
+    }  
     
     return (
         <div className="create-spot-wrapper">

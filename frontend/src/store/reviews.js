@@ -19,7 +19,7 @@ export const getSpotReviews = (spotId) => async dispatch => {
     
     if (res.ok) {
         const data = await res.json();
-        dispatch(getSpotsReviewsAction(data.Reviews));  
+        dispatch(getSpotsReviewsAction(data.Reviews.reverse()));  
     };
     return res;
 };

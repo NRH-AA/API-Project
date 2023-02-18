@@ -171,11 +171,16 @@
 .images-div {
     display: flex;
     flex-wrap: wrap;
-    height: 100%;
     width: 50%;
 }
 
 .images {
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.images-a {
     height: 50%;
     width: 45%;
     border: 2px solid black;

@@ -25,7 +25,7 @@ const SpotComponent = () => {
                     
                     <div className="allSpots-info-div">
                         <p className="allSpots-p">{spot.city + ", " + spot.state}</p>
-                        <p className="allSpots-p-2">{'⭐' + spot.avgRating}</p>
+                        <p className="allSpots-p-2">⭐ {spot?.avgRating > 0 ? spot.avgRating : 'New'}</p>
                     </div>
                     
                     <div className="allSpots-price-div">   
