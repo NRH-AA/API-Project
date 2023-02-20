@@ -34,6 +34,11 @@ const UpdateSpotModal = () => {
     const [description, setDescription] = useState(spot.description ? spot.description : '');
     const [name, setName] = useState(spot.name ? spot.name : '');
     const [price, setPrice] = useState(spot.price ? spot.price : '');
+    const [image1, setImage1] = useState('');
+    const [image2, setImage2] = useState('');
+    const [image3, setImage3] = useState('');
+    const [image4, setImage4] = useState('');
+    const [image5, setImage5] = useState('');
     const [errors, setErrors] = useState([]);
     const [formErrors, setFormErrors] = useState({});
     
@@ -60,6 +65,22 @@ const UpdateSpotModal = () => {
         if (description.length < 30) err.desc = "Description needs a minimum of 30 characters";
         if (!name) err.name = "Name is required";
         if (!price) err.price = "Price is required";
+        
+        if (image1 && !image1.endsWith('.png') && !image1.endsWith('.jpg') && !image1.endsWith('.jpeg')) {
+            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
+        }
+        if (image2 && !image2.endsWith('.png') && !image2.endsWith('.jpg') && !image2.endsWith('.jpeg')) {
+            err.image2 = "Image URL must end in .png, .jpg, or .jpeg"
+        }
+        if (image3 && !image3.endsWith('.png') && !image3.endsWith('.jpg') && !image3.endsWith('.jpeg')) {
+            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
+        }
+        if (image4 && !image4.endsWith('.png') && !image4.endsWith('.jpg') && !image4.endsWith('.jpeg')) {
+            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
+        }
+        if (image5 && !image5.endsWith('.png') && !image5.endsWith('.jpg') && !image5.endsWith('.jpeg')) {
+            err.image1 = "Image URL must end in .png, .jpg, or .jpeg"
+        }
         
         return err;
     }
@@ -88,7 +109,14 @@ const UpdateSpotModal = () => {
             lng
         };
         
-        dispatch(spotActions.updateSpot(spotData, []))
+        const imageData = [];
+        imageData.push({url: image1, preview: true});
+        if (image2) imageData.push({url: image2, preview: false});
+        if (image3) imageData.push({url: image3, preview: false});
+        if (image4) imageData.push({url: image4, preview: false});
+        if (image5) imageData.push({url: image5, preview: false});
+        
+        dispatch(spotActions.updateSpot(spotData, imageData))
         .catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) setErrors(data.errors);
@@ -172,6 +200,34 @@ const UpdateSpotModal = () => {
                         onChange={(e) => setPrice(e.target.value)}
                         ></input>
                     <span className="error-msg">{formErrors.price ? formErrors.price : ''}</span>
+                </div>
+                
+                <div id="images-div">
+                    <input className="create-spot-input imageUrl-input" type="text" placeholder='Preview Image URL' value={image1}
+                        onChange={(e) => setImage1(e.target.value)}
+                    ></input>
+                    <span className="error-msg">{formErrors.image1 ? formErrors.image1 : ''}</span>
+                    
+                    <input className="create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image2}
+                        onChange={(e) => setImage2(e.target.value)}
+                    ></input>
+                    <span className="error-msg">{formErrors.image2 ? formErrors.image2 : ''}</span>
+                    
+                    <input className="create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image3}
+                        onChange={(e) => setImage3(e.target.value)}
+                    ></input>
+                    <span className="error-msg">{formErrors.image3 ? formErrors.image3 : ''}</span>
+                    
+                    <input className="create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image4}
+                        onChange={(e) => setImage4(e.target.value)}
+                    ></input>
+                    <span className="error-msg">{formErrors.image4 ? formErrors.image4 : ''}</span>
+                    
+                    <input className="create-spot-input imageUrl-input" type="text" placeholder='Image URL' value={image5}
+                        onChange={(e) => setImage5(e.target.value)}
+                    ></input>
+                    <span className="error-msg">{formErrors.image5 ? formErrors.image5 : ''}</span>
+                    
                 </div>
                 
                 <div id="update-spot-button-div">

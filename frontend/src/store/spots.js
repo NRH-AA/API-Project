@@ -75,11 +75,9 @@ export const createSpot = (data, images) => async dispatch => {
         const spotData = await res.json();
         dispatch(createSpotAction(spotData));
         
-        images.forEach(async image => {
-            await csrfFetch(`/api/spots/${spotData.id}/images`, {
-                method: 'POST',
-                body: JSON.stringify({url: image.url, preview: image.preview})
-            });
+        await csrfFetch(`/api/spots/${spotData.id}/images`, {
+            method: 'POST',
+            body: JSON.stringify({"images": images})
         });
         
         dispatch(getSpot(spotData.id));
@@ -95,11 +93,9 @@ export const updateSpot = (data, images) => async dispatch => {
     });
     
     if (res.ok) {
-        images.forEach(async image => {
-            await csrfFetch(`/api/spots/${data.id}/images`, {
-                method: 'POST',
-                body: JSON.stringify({url: image.url, preview: image.preview})
-            });
+        await csrfFetch(`/api/spots/${data.id}/images`, {
+            method: 'POST',
+            body: JSON.stringify({"images": images})
         });
 
         dispatch(getSpot(data.id));

@@ -249,10 +249,10 @@ router.delete('/:id', requireAuth, async (req, res, next) => {
 })
 
 // Add Image to Spot Id
-router.post('/:id/images', requireAuth, validateSpotImage, async (req, res, next) => {
+router.post('/:id/images', requireAuth, async (req, res, next) => {
     const { user } = req;
     
-    let { url, preview } = req.body;
+    let { images } = req.body;
     
     const spot = await Spot.findByPk(req.params.id);
     if (!spot) {
@@ -269,36 +269,35 @@ router.post('/:id/images', requireAuth, validateSpotImage, async (req, res, next
         });
     };
     
-    const spotImagesCount = await SpotImage.count({where: {spotId: req.params.id}});
-    if (spotImagesCount === 5) {
-        return res.status(400).json({
-            "message": "Bad Request",
-            "errors": "You may only have 5 spot images"
-        });
-    };
-    
-    if (preview) {
-        spot.previewImage = url;
-        preview = true;
-    };
-    
-    if (!preview) preview = false;
-    
-    const spotImages = await SpotImage.findOne({where: {spotId: req.params.id, preview: true}});
+    const spotImages = await SpotImage.findAll({where: {spotId: req.params.id}});
+    let count = 0;
     if (spotImages) {
-        spotImages.preview = false;
-        await spotImages.save();
-    };
+        for (let i in spotImages) {
+            if (images[i]) {
+                spotImages[i].url = images[i].url;
+                spotImages[i].preview = images[i].preview;
+                count++;
+            }
+            await spotImages[i].save();
+        }
+    }
     
-    const newImage = await SpotImage.create({
-        spotId: req.params.id,
-        url,
-        preview
-    });
+    for (let i = count; i < images.length; i++) {
+        const img = images[i];
+        await SpotImage.create({
+            spotId: req.params.id,
+            url: img.url,
+            preview: img.preview
+        });
+    }
+    
+    for (let i in images) {
+        if (images[i].preview) spot.previewImage = images[i].url;
+    }
     
     await spot.save();
     
-    return res.status(200).json(newImage);
+    return res.status(200).json({"message": "Creation successful"});
 });
 
 // Delete image from spot
